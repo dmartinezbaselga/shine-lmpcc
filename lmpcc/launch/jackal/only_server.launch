@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<launch>
+    <arg name="silent" default="false"/>
+    <node name="shine_server" pkg="lmpcc" type="run_guidance_server.sh" output="log" if="$(arg silent)"/>
+    <node name="shine_server" pkg="lmpcc" type="run_guidance_server.sh" output="screen" unless="$(arg silent)"/>
+</launch>  

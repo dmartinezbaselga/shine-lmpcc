@@ -1,0 +1,682 @@
+schema: '2.0'
+stages:
+  run@unstructured:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/planning_benchmark/main.py
+      parameters True
+    - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true
+      pedestrian_scenario:="random_fast/16_straight.xml" project_name:="../../../../../../../Documents/publications/multi-mpc-2023/results/data"
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/planning_benchmark/main.py
+      restore
+    deps:
+    - path: lmpcc/include/generated/ConfigurationGMPCC
+      md5: b33dffc8ef9464f7bcf1ae739b90bbfa
+      size: 41
+    - path: lmpcc_tools/scripts/experiments/planning_benchmark/set_parameters.py
+      md5: a5a583c8c59cbf521b2f3e2b312a6f4b
+      size: 693
+    params:
+      ../pedestrian_simulator/config/configuration.yaml:
+        pedestrian_simulator.pedestrians.seed: 5
+      lmpcc/config/path.yaml:
+        global_path.x:
+        - 0
+        - 3
+        - 6
+        - 9
+        - 12
+        - 15
+        - 18
+        - 21
+        - 24
+        - 27
+        - 30
+        - 33
+        - 36
+        - 39
+        - 42
+        - 45
+        - 50
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/random_fast-16_straight_GMPCC.txt
+      md5: f3f0c02409a2a498dca3b0213d274374
+      size: 545082123
+  evaluate@unstructured:
+    cmd: source ~/.zshrc && cd src/lmpcc/lmpcc_tools/scripts && python3 metrics.py
+      random_fast-16_straight GMPCC && cd ../../../..
+    deps:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/random_fast-16_straight_GMPCC.txt
+      md5: f3f0c02409a2a498dca3b0213d274374
+      size: 545082123
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/random_fast-16_straight/GMPCC.json
+      md5: 64c52f76966e7e4212f198f4cb833b9a
+      size: 4989
+  compare@unstructured:
+    cmd: source ~/.zshrc && cd src/lmpcc/lmpcc_tools/scripts && python3 compare.py
+      random_fast-16_straight
+    deps:
+    - path: lmpcc_tools/scripts/compare.py
+      md5: 2b5f5445f1008713d465b3088ab1d8ab
+      size: 11388
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/random_fast-16_straight/GMPCC.json
+      md5: 32204ef46c63fff0d7bf19b5f1be44c8
+      size: 4313
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/../latex/tables/random_fast-16_straight.tex
+      md5: 11e8fa9f2347894b66cd8e13dbfecd32
+      size: 621
+  run@unstructured-easy:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/planning_benchmark/main.py
+      parameters True
+    - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true
+      pedestrian_scenario:="random_fast/8_straight.xml" project_name:="../../../../../../../Documents/publications/multi-mpc-2023/results/data"
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/planning_benchmark/main.py
+      restore
+    deps:
+    - path: lmpcc/include/generated/ConfigurationGMPCC
+      md5: b33dffc8ef9464f7bcf1ae739b90bbfa
+      size: 41
+    - path: lmpcc_tools/scripts/experiments/planning_benchmark/set_parameters.py
+      md5: a5a583c8c59cbf521b2f3e2b312a6f4b
+      size: 693
+    params:
+      ../pedestrian_simulator/config/configuration.yaml:
+        pedestrian_simulator.pedestrians.seed: 5
+      lmpcc/config/path.yaml:
+        global_path.x:
+        - 0
+        - 3
+        - 6
+        - 9
+        - 12
+        - 15
+        - 18
+        - 21
+        - 24
+        - 27
+        - 30
+        - 33
+        - 36
+        - 39
+        - 42
+        - 45
+        - 50
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/random_fast-8_straight_GMPCC.txt
+      md5: 2734aa7505ae474ccf8ca5d94e5dc8d2
+      size: 499152240
+  evaluate@unstructured-easy:
+    cmd: source ~/.zshrc && cd src/lmpcc/lmpcc_tools/scripts && python3 metrics.py
+      random_fast-8_straight GMPCC && cd ../../../..
+    deps:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/random_fast-8_straight_GMPCC.txt
+      md5: 2734aa7505ae474ccf8ca5d94e5dc8d2
+      size: 499152240
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/random_fast-8_straight/GMPCC.json
+      md5: 3fce959b769591084298cdbf651b79da
+      size: 4953
+  run@unstructured-medium:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/planning_benchmark/main.py
+      parameters True
+    - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true
+      pedestrian_scenario:="random_fast/12_straight.xml" project_name:="../../../../../../../Documents/publications/multi-mpc-2023/results/data"
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/planning_benchmark/main.py
+      restore
+    deps:
+    - path: lmpcc/include/generated/ConfigurationGMPCC
+      md5: b33dffc8ef9464f7bcf1ae739b90bbfa
+      size: 41
+    - path: lmpcc_tools/scripts/experiments/planning_benchmark/set_parameters.py
+      md5: a5a583c8c59cbf521b2f3e2b312a6f4b
+      size: 693
+    params:
+      ../pedestrian_simulator/config/configuration.yaml:
+        pedestrian_simulator.pedestrians.seed: 5
+      lmpcc/config/path.yaml:
+        global_path.x:
+        - 0
+        - 3
+        - 6
+        - 9
+        - 12
+        - 15
+        - 18
+        - 21
+        - 24
+        - 27
+        - 30
+        - 33
+        - 36
+        - 39
+        - 42
+        - 45
+        - 50
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/random_fast-12_straight_GMPCC.txt
+      md5: 3f704eade31ed89653d15a389870fdfb
+      size: 518852745
+  run@unstructured-super-easy:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/planning_benchmark/main.py
+      parameters True
+    - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true
+      pedestrian_scenario:="random_fast/4_straight.xml" project_name:="../../../../../../../Documents/publications/multi-mpc-2023/results/data"
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/planning_benchmark/main.py
+      restore
+    deps:
+    - path: lmpcc/include/generated/ConfigurationGMPCC
+      md5: b33dffc8ef9464f7bcf1ae739b90bbfa
+      size: 41
+    - path: lmpcc_tools/scripts/experiments/planning_benchmark/set_parameters.py
+      md5: a5a583c8c59cbf521b2f3e2b312a6f4b
+      size: 693
+    params:
+      ../pedestrian_simulator/config/configuration.yaml:
+        pedestrian_simulator.pedestrians.seed: 5
+      lmpcc/config/path.yaml:
+        global_path.x:
+        - 0
+        - 3
+        - 6
+        - 9
+        - 12
+        - 15
+        - 18
+        - 21
+        - 24
+        - 27
+        - 30
+        - 33
+        - 36
+        - 39
+        - 42
+        - 45
+        - 50
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/random_fast-4_straight_GMPCC.txt
+      md5: f622b4653b412b86038daa5a25778929
+      size: 463861374
+  evaluate@unstructured-super-easy:
+    cmd: source ~/.zshrc && cd src/lmpcc/lmpcc_tools/scripts && python3 metrics.py
+      random_fast-4_straight GMPCC && cd ../../../..
+    deps:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/random_fast-4_straight_GMPCC.txt
+      md5: f622b4653b412b86038daa5a25778929
+      size: 463861374
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/random_fast-4_straight/GMPCC.json
+      md5: f04ad3a8d4918b31c032c25f8902b47e
+      size: 4935
+  evaluate@unstructured-medium:
+    cmd: source ~/.zshrc && cd src/lmpcc/lmpcc_tools/scripts && python3 metrics.py
+      random_fast-12_straight GMPCC && cd ../../../..
+    deps:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/random_fast-12_straight_GMPCC.txt
+      md5: 3f704eade31ed89653d15a389870fdfb
+      size: 518852745
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/random_fast-12_straight/GMPCC.json
+      md5: 8662ce0d7b813f296fd55b57cb09f99e
+      size: 4961
+  compare@unstructured-medium:
+    cmd: source ~/.zshrc && cd src/lmpcc/lmpcc_tools/scripts && python3 compare.py
+      random_fast-12_straight
+    deps:
+    - path: lmpcc_tools/scripts/compare.py
+      md5: 2b5f5445f1008713d465b3088ab1d8ab
+      size: 11388
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/random_fast-12_straight/GMPCC.json
+      md5: 0ca47ab039fc4cb4075d079c4b2f109d
+      size: 4315
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/../latex/tables/random_fast-12_straight.tex
+      md5: c1724b8631cdde9d139141053d04f020
+      size: 612
+  compare@unstructured-easy:
+    cmd: source ~/.zshrc && cd src/lmpcc/lmpcc_tools/scripts && python3 compare.py
+      random_fast-8_straight
+    deps:
+    - path: lmpcc_tools/scripts/compare.py
+      md5: 2b5f5445f1008713d465b3088ab1d8ab
+      size: 11388
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/random_fast-8_straight/GMPCC.json
+      md5: edb3518f96251f448968b2365ce20de0
+      size: 4305
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/../latex/tables/random_fast-8_straight.tex
+      md5: f0d8836f49c664d053f63a92c7e0c678
+      size: 619
+  compare@unstructured-super-easy:
+    cmd: source ~/.zshrc && cd src/lmpcc/lmpcc_tools/scripts && python3 compare.py
+      random_fast-4_straight
+    deps:
+    - path: lmpcc_tools/scripts/compare.py
+      md5: 2b5f5445f1008713d465b3088ab1d8ab
+      size: 11388
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/random_fast-4_straight/GMPCC.json
+      md5: 4d1df02c9cba24cc83181c80f00f3483
+      size: 4313
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/../latex/tables/random_fast-4_straight.tex
+      md5: fa344c1f215570feebe0dad0b805d1bf
+      size: 629
+  run-lmpcc@unstructured-super-easy:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/planning_benchmark/main.py
+      parameters True 0
+    - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true
+      pedestrian_scenario:="random_fast/4_straight.xml" project_name:="../../../../../../../Documents/publications/multi-mpc-2023/results/data"
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/planning_benchmark/main.py
+      restore
+    deps:
+    - path: lmpcc/include/generated/ConfigurationGMPCC
+      md5: b33dffc8ef9464f7bcf1ae739b90bbfa
+      size: 41
+    - path: lmpcc_tools/scripts/experiments/planning_benchmark/set_parameters.py
+      md5: a5a583c8c59cbf521b2f3e2b312a6f4b
+      size: 693
+    params:
+      ../pedestrian_simulator/config/configuration.yaml:
+        pedestrian_simulator.pedestrians.seed: 5
+      lmpcc/config/path.yaml:
+        global_path.x:
+        - 0
+        - 3
+        - 6
+        - 9
+        - 12
+        - 15
+        - 18
+        - 21
+        - 24
+        - 27
+        - 30
+        - 33
+        - 36
+        - 39
+        - 42
+        - 45
+        - 50
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/random_fast-4_straight_LMPCC.txt
+      md5: c97cdc94e8f60c0fa2961aae7eb66e62
+      size: 229210080
+  evaluate-lmpcc@unstructured-super-easy:
+    cmd: source ~/.zshrc && cd src/lmpcc/lmpcc_tools/scripts && python3 metrics.py
+      random_fast-4_straight LMPCC && cd ../../../..
+    deps:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/random_fast-4_straight_LMPCC.txt
+      md5: c97cdc94e8f60c0fa2961aae7eb66e62
+      size: 229210080
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/random_fast-4_straight/LMPCC.json
+      md5: 0518e53b1217251e548a9143314c62a9
+      size: 4903
+  run-lmpcc@unstructured-medium:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/planning_benchmark/main.py
+      parameters True 0
+    - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true
+      pedestrian_scenario:="random_fast/12_straight.xml" project_name:="../../../../../../../Documents/publications/multi-mpc-2023/results/data"
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/planning_benchmark/main.py
+      restore
+    deps:
+    - path: lmpcc/include/generated/ConfigurationGMPCC
+      md5: b33dffc8ef9464f7bcf1ae739b90bbfa
+      size: 41
+    - path: lmpcc_tools/scripts/experiments/planning_benchmark/set_parameters.py
+      md5: a5a583c8c59cbf521b2f3e2b312a6f4b
+      size: 693
+    params:
+      ../pedestrian_simulator/config/configuration.yaml:
+        pedestrian_simulator.pedestrians.seed: 5
+      lmpcc/config/path.yaml:
+        global_path.x:
+        - 0
+        - 3
+        - 6
+        - 9
+        - 12
+        - 15
+        - 18
+        - 21
+        - 24
+        - 27
+        - 30
+        - 33
+        - 36
+        - 39
+        - 42
+        - 45
+        - 50
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/random_fast-12_straight_LMPCC.txt
+      md5: f3417aea3d14d1d6850124b613754ecd
+      size: 287509735
+  run-lmpcc@unstructured:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/planning_benchmark/main.py
+      parameters True 0
+    - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true
+      pedestrian_scenario:="random_fast/16_straight.xml" project_name:="../../../../../../../Documents/publications/multi-mpc-2023/results/data"
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/planning_benchmark/main.py
+      restore
+    deps:
+    - path: lmpcc/include/generated/ConfigurationGMPCC
+      md5: b33dffc8ef9464f7bcf1ae739b90bbfa
+      size: 41
+    - path: lmpcc_tools/scripts/experiments/planning_benchmark/set_parameters.py
+      md5: a5a583c8c59cbf521b2f3e2b312a6f4b
+      size: 693
+    params:
+      ../pedestrian_simulator/config/configuration.yaml:
+        pedestrian_simulator.pedestrians.seed: 5
+      lmpcc/config/path.yaml:
+        global_path.x:
+        - 0
+        - 3
+        - 6
+        - 9
+        - 12
+        - 15
+        - 18
+        - 21
+        - 24
+        - 27
+        - 30
+        - 33
+        - 36
+        - 39
+        - 42
+        - 45
+        - 50
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/random_fast-16_straight_LMPCC.txt
+      md5: ed6a237b15d5f191b43d3eb0ddf7bf53
+      size: 304354427
+  evaluate-lmpcc@unstructured:
+    cmd: source ~/.zshrc && cd src/lmpcc/lmpcc_tools/scripts && python3 metrics.py
+      random_fast-16_straight LMPCC && cd ../../../..
+    deps:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/random_fast-16_straight_LMPCC.txt
+      md5: ed6a237b15d5f191b43d3eb0ddf7bf53
+      size: 304354427
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/random_fast-16_straight/LMPCC.json
+      md5: 3f33277acc52d32c3d3197d000ef130b
+      size: 4960
+  evaluate-lmpcc@unstructured-medium:
+    cmd: source ~/.zshrc && cd src/lmpcc/lmpcc_tools/scripts && python3 metrics.py
+      random_fast-12_straight LMPCC && cd ../../../..
+    deps:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/random_fast-12_straight_LMPCC.txt
+      md5: f3417aea3d14d1d6850124b613754ecd
+      size: 287509735
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/random_fast-12_straight/LMPCC.json
+      md5: 732fe9d2c17677c2289e868b6456953c
+      size: 4977
+  run-lmpcc@unstructured-easy:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/planning_benchmark/main.py
+      parameters True 0
+    - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true
+      pedestrian_scenario:="random_fast/8_straight.xml" project_name:="../../../../../../../Documents/publications/multi-mpc-2023/results/data"
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/planning_benchmark/main.py
+      restore
+    deps:
+    - path: lmpcc/include/generated/ConfigurationGMPCC
+      md5: b33dffc8ef9464f7bcf1ae739b90bbfa
+      size: 41
+    - path: lmpcc_tools/scripts/experiments/planning_benchmark/set_parameters.py
+      md5: a5a583c8c59cbf521b2f3e2b312a6f4b
+      size: 693
+    params:
+      ../pedestrian_simulator/config/configuration.yaml:
+        pedestrian_simulator.pedestrians.seed: 5
+      lmpcc/config/path.yaml:
+        global_path.x:
+        - 0
+        - 3
+        - 6
+        - 9
+        - 12
+        - 15
+        - 18
+        - 21
+        - 24
+        - 27
+        - 30
+        - 33
+        - 36
+        - 39
+        - 42
+        - 45
+        - 50
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/random_fast-8_straight_LMPCC.txt
+      md5: aab6c090d090a0f95f8aec08b954da62
+      size: 253271026
+  evaluate-lmpcc@unstructured-easy:
+    cmd: source ~/.zshrc && cd src/lmpcc/lmpcc_tools/scripts && python3 metrics.py
+      random_fast-8_straight LMPCC && cd ../../../..
+    deps:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/random_fast-8_straight_LMPCC.txt
+      md5: aab6c090d090a0f95f8aec08b954da62
+      size: 253271026
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/random_fast-8_straight/LMPCC.json
+      md5: 203b612d8c077e61d34fed32e929df9a
+      size: 4919
+  run-no-original@unstructured:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/planning_benchmark/main.py
+      parameters False
+    - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true
+      pedestrian_scenario:="random_fast/16_straight.xml" project_name:="../../../../../../../Documents/publications/multi-mpc-2023/results/data"
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/planning_benchmark/main.py
+      restore
+    deps:
+    - path: lmpcc/include/generated/ConfigurationGMPCC
+      md5: b33dffc8ef9464f7bcf1ae739b90bbfa
+      size: 41
+    - path: lmpcc_tools/scripts/experiments/planning_benchmark/set_parameters.py
+      md5: a5a583c8c59cbf521b2f3e2b312a6f4b
+      size: 693
+    params:
+      ../pedestrian_simulator/config/configuration.yaml:
+        pedestrian_simulator.pedestrians.seed: 5
+      lmpcc/config/path.yaml:
+        global_path.x:
+        - 0
+        - 3
+        - 6
+        - 9
+        - 12
+        - 15
+        - 18
+        - 21
+        - 24
+        - 27
+        - 30
+        - 33
+        - 36
+        - 39
+        - 42
+        - 45
+        - 50
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/random_fast-16_straight_GMPCCNO.txt
+      md5: df19c82beda03eaa2c547b829c635b40
+      size: 489404550
+  run-no-original@unstructured-super-easy:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/planning_benchmark/main.py
+      parameters False
+    - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true
+      pedestrian_scenario:="random_fast/4_straight.xml" project_name:="../../../../../../../Documents/publications/multi-mpc-2023/results/data"
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/planning_benchmark/main.py
+      restore
+    deps:
+    - path: lmpcc/include/generated/ConfigurationGMPCC
+      md5: b33dffc8ef9464f7bcf1ae739b90bbfa
+      size: 41
+    - path: lmpcc_tools/scripts/experiments/planning_benchmark/set_parameters.py
+      md5: a5a583c8c59cbf521b2f3e2b312a6f4b
+      size: 693
+    params:
+      ../pedestrian_simulator/config/configuration.yaml:
+        pedestrian_simulator.pedestrians.seed: 5
+      lmpcc/config/path.yaml:
+        global_path.x:
+        - 0
+        - 3
+        - 6
+        - 9
+        - 12
+        - 15
+        - 18
+        - 21
+        - 24
+        - 27
+        - 30
+        - 33
+        - 36
+        - 39
+        - 42
+        - 45
+        - 50
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/random_fast-4_straight_GMPCCNO.txt
+      md5: db8fd97bb21af17ee01c75e8b1aedd78
+      size: 391758772
+  evaluate-no-original@unstructured-super-easy:
+    cmd: source ~/.zshrc && cd src/lmpcc/lmpcc_tools/scripts && python3 metrics.py
+      random_fast-4_straight GMPCCNO && cd ../../../..
+    deps:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/random_fast-4_straight_GMPCCNO.txt
+      md5: db8fd97bb21af17ee01c75e8b1aedd78
+      size: 391758772
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/random_fast-4_straight/GMPCCNO.json
+      md5: 714cbfd11599b65bd47a5bcfab0f8dd9
+      size: 4939
+  evaluate-no-original@unstructured:
+    cmd: source ~/.zshrc && cd src/lmpcc/lmpcc_tools/scripts && python3 metrics.py
+      random_fast-16_straight GMPCCNO && cd ../../../..
+    deps:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/random_fast-16_straight_GMPCCNO.txt
+      md5: df19c82beda03eaa2c547b829c635b40
+      size: 489404550
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/random_fast-16_straight/GMPCCNO.json
+      md5: 7bbfc7b36081fce35f2ec6b29025642b
+      size: 4977
+  run-no-original@unstructured-medium:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/planning_benchmark/main.py
+      parameters False
+    - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true
+      pedestrian_scenario:="random_fast/12_straight.xml" project_name:="../../../../../../../Documents/publications/multi-mpc-2023/results/data"
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/planning_benchmark/main.py
+      restore
+    deps:
+    - path: lmpcc/include/generated/ConfigurationGMPCC
+      md5: b33dffc8ef9464f7bcf1ae739b90bbfa
+      size: 41
+    - path: lmpcc_tools/scripts/experiments/planning_benchmark/set_parameters.py
+      md5: a5a583c8c59cbf521b2f3e2b312a6f4b
+      size: 693
+    params:
+      ../pedestrian_simulator/config/configuration.yaml:
+        pedestrian_simulator.pedestrians.seed: 5
+      lmpcc/config/path.yaml:
+        global_path.x:
+        - 0
+        - 3
+        - 6
+        - 9
+        - 12
+        - 15
+        - 18
+        - 21
+        - 24
+        - 27
+        - 30
+        - 33
+        - 36
+        - 39
+        - 42
+        - 45
+        - 50
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/random_fast-12_straight_GMPCCNO.txt
+      md5: 7ca1a4071df4e2ea04304ba1f18278d5
+      size: 464211838
+  evaluate-no-original@unstructured-medium:
+    cmd: source ~/.zshrc && cd src/lmpcc/lmpcc_tools/scripts && python3 metrics.py
+      random_fast-12_straight GMPCCNO && cd ../../../..
+    deps:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/random_fast-12_straight_GMPCCNO.txt
+      md5: 7ca1a4071df4e2ea04304ba1f18278d5
+      size: 464211838
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/random_fast-12_straight/GMPCCNO.json
+      md5: 79aa51ad9ef7524cb9c6ac09e322b13d
+      size: 4966
+  run-no-original@unstructured-easy:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/planning_benchmark/main.py
+      parameters False
+    - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true
+      pedestrian_scenario:="random_fast/8_straight.xml" project_name:="../../../../../../../Documents/publications/multi-mpc-2023/results/data"
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/planning_benchmark/main.py
+      restore
+    deps:
+    - path: lmpcc/include/generated/ConfigurationGMPCC
+      md5: b33dffc8ef9464f7bcf1ae739b90bbfa
+      size: 41
+    - path: lmpcc_tools/scripts/experiments/planning_benchmark/set_parameters.py
+      md5: a5a583c8c59cbf521b2f3e2b312a6f4b
+      size: 693
+    params:
+      ../pedestrian_simulator/config/configuration.yaml:
+        pedestrian_simulator.pedestrians.seed: 5
+      lmpcc/config/path.yaml:
+        global_path.x:
+        - 0
+        - 3
+        - 6
+        - 9
+        - 12
+        - 15
+        - 18
+        - 21
+        - 24
+        - 27
+        - 30
+        - 33
+        - 36
+        - 39
+        - 42
+        - 45
+        - 50
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/random_fast-8_straight_GMPCCNO.txt
+      md5: 9f36b5a593667a9be56407db949a5654
+      size: 432204640
+  evaluate-no-original@unstructured-easy:
+    cmd: source ~/.zshrc && cd src/lmpcc/lmpcc_tools/scripts && python3 metrics.py
+      random_fast-8_straight GMPCCNO && cd ../../../..
+    deps:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/random_fast-8_straight_GMPCCNO.txt
+      md5: 9f36b5a593667a9be56407db949a5654
+      size: 432204640
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/random_fast-8_straight/GMPCCNO.json
+      md5: 532bcf6522a4dc774c659f1c056d9211
+      size: 4946

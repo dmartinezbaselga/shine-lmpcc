@@ -1,0 +1,171 @@
+# Create timer for automatic ControlLoop() function execution in system interface (not MPCC::initialize) if this variable is set to true
+enable_ext_control: true
+
+# Debugging
+debug_output: false # Prints lots of information (use when debugging!)
+debug_solver: false # Prints lots of solver information (use when debugging only!)
+debug_velocity: 0.0      # Adds to the velocity estimation for debugging
+debug_colors: false
+debug_print_plan: false
+
+# Simulation mode
+simulation_mode: false
+enable_external_weights: true
+
+# Main Settings #
+# Synchronize
+sync_mode: true
+clock_frequency: 20 # in Hz
+
+# When true starts planning immediately
+auto_enable_plan: true
+synchronized_actuation: true # Should the controller only actuate after a full control cycle?
+
+# Physical Parameters
+enable_output: true   # Enables physical output (cannot be changed when running)
+deceleration_at_infeasible: 1.0
+
+# Recording
+recording:   
+      enable_recording: false
+      experiment: 'gaussian' # Creates a folder with this name
+      add_timestamp: true           # Add timestamps to the file name
+      number_of_experiments: 107
+      save_every: 107 # experiments
+      time_out: 30000000
+      video: true
+      custom_video_name: ''
+
+# Kinematic chain parameter
+robot_base_link: base_link
+target_frame: map # world fixed frame but will be changed according to robot_state_topic
+
+# Road parameters (Not used)
+path:
+  enable_clothoid_interpolation: true
+  halfspaces_from_spline: true
+  # Add path parameter (+ folder in config)
+
+road:
+  two_way: false
+  width_right: 20.0
+  width_left: 20.0
+
+# Parameters for collision constraints
+obstacles: 
+      max_obstacles: 8 # Set to -1 to use carla/scenario/method/max_obstacles instead
+      radius: 0.3
+      visualize_ellipsoids: true
+
+robot:
+      length: 0.65 # todo: from solver
+      width: 0.65 # ...
+      com_to_back: 0.325 # ...
+
+debug:
+  boolean1: true # is binomial
+  # double1: 50000 # step of dual projection
+  # double1: 1000
+  double1: 1.0
+
+scenarios:
+      debug_output: false
+      use_trajectory_sampling: false # Trajectory or marginal
+      multithread: false
+      manual_noise: 0.3
+      trajectory:
+        n_bar: 4 # 4 # repurposed! cVaR threshold for maximum support selection
+        use_real_samples: false       # Use a database instead of model
+        enable_projection: true       # Project to a feasible trajectory (High support!)
+        enable_scenario_removal: true # Remove scenarios online
+        use_1D_projection: true # To be removed later
+        sqp_iterations: 15
+        save_all_support: true
+        enable_termination: false
+      safe_sampling:
+        compute_automatically: true
+        risk: 0.0003125 #0.0003125 #0.05 # Used if automatic
+        confidence: 0.01 # =1e-6
+        removal_count: 2
+        sample_size: 221 # Used if not automatic # 3sigma: 53050  # 1 sigma 820
+      marginal:
+        seed: 126 #-1 is random!
+        propagate_covariance: true  # If true propagates the received Gaussian covariance over the horizon
+        checked_constraints: 250 #250 # (in paper l) Should be scaled with scenarios
+        database:
+                size: 100
+                truncated: false
+                truncated_radius: 3.5 # in terms of sigma (only used if truncated gaussian)
+                build_database: true # Set to true to force building new samples
+        received_object_sigma: 1.0
+      static_obstacles:
+        enable: true
+        n_halfspaces: 2
+      polygon:
+        range: 10.0 # maximum range of the regions
+        activation_range: 400.0   # How far away pedestrians are sampled
+      visualisation:
+          scale: 1.0
+          discs_to_draw: [1]
+          # indices_to_draw: [0, 1, 2, 3, 4, 9, 19]
+          # indices_to_draw: [0, 1, 2, 3]
+          # indices_to_draw: [0, 6, 12, 19]
+          indices_to_draw: [0, 5, 10, 15, 19]
+          # indices_to_draw: [0, 5, 10, 15, 20, 25, 30, 35, 39]
+          # indices_to_draw: [0, 3, 6, 9, 12, 15, 19]
+          # indices_to_draw: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 19]
+          # indices_to_draw: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+          # indices_to_draw: [19]
+          initial_guess: false
+          all_scenarios: false # Warning: Slows down the controller
+          support_scenarios: true 
+          polygon_scenarios: true
+          removed_scenarios: false
+          ellipsoids: true
+          constraints: true
+
+# safe_horizon_mpc:
+#     alpha: 4 # 4 # repurposed! cVaR threshold for maximum support selection
+#     removal_enabled: true # Remove scenarios online
+#     sqp_iterations: 15
+
+# s_mpcc:
+#     checked_constraints: 250 #250 # (in paper l) Should be scaled with scenarios
+
+# scenarios:
+#     debug_output: false
+#     method: 'safe horizon'
+#     # method: 's-mpcc'
+#     seed: 126 #-1 is random!
+#     multithread: false
+#     safe_sampling:
+#         compute_automatically: true
+#         risk: 0.05 # Used if automatic
+#         confidence: 0.01 # =1e-6
+#         removal_count: 2
+#         sample_size: 668 # Used if not automatic # 3sigma: 53050  # 1 sigma 820
+#     sample_database:
+#         batches: 100
+#         truncated: false
+#         truncated_radius: 3.5 # in terms of sigma (only used if truncated gaussian)
+#         build_database: true # Set to true to force building new samples
+#     static_obstacles:
+#         enable: true
+#         n_halfspaces: 2
+#     propagate_covariance: true  # If true propagates the received Gaussian covariance over the horizon
+#     polygon:
+#         range: 10.0 # maximum range of the regions
+#         activation_range: 400.0   # How far away pedestrians are sampled
+#     visualisation:
+#         scale: 1.0
+#         discs_to_draw: [1]
+#         indices_to_draw: [0, 5, 10, 15, 19]
+#         # indices_to_draw: [0, 3, 6, 9, 12, 15, 19]
+#         # indices_to_draw: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 19]
+#         # indices_to_draw: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+#         initial_guess: true
+#         all_scenarios: false # Warning: Slows down the controller
+#         support_scenarios: true 
+#         polygon_scenarios: false
+#         removed_scenarios: false
+#         constraints: false

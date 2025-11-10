@@ -1,0 +1,32 @@
+# Input and output topics
+publish:
+    control_command: '/carla/ego_vehicle/ackermann_cmd'
+    feedback: '/lmpcc/controller_feedback'
+    reset: 'reset'
+    reset_environment: '/carla/ego_vehicle/initialpose'
+    navigation_goal: '/carla/ego_vehicle/goal'
+
+subscribe:
+    state: '/carla/ego_vehicle/odometry'
+    velocity: ''
+    obstacles: '/carla/objects'
+    obstacle_predictions: /pedestrian_simulator/trajectory_predictions
+    # obstacle_predictions: /multitrack_preds_3d/multitrack_preds
+    # obstacle_predictions: ellipse_objects_feed
+    waypoints: '/roadmap/reference'
+    steering_angle: '/movebox/front_left_steer_joint' # There is no delay in steering!
+    acceleration: '/accel/filtered'
+    velocity_reference: 'rodrigo'
+    occupancy_grid: costmap/costmap/costmap
+    linear_constraints: '/lmpcc/linear_constraints'
+
+visualization:
+    reference_path: '/lmpcc/reference_path' # visuals prevents clash with sub
+    reference_arrows: '/lmpcc/reference_arrows'
+    spline_index: '/lmpcc/spline_index'
+    current_collision_space: '/lmpcc/current_collision_space'
+    planned_collision_space: '/lmpcc/planned_collision_space'
+    planned_trajectory: '/lmpcc/planned_trajectory'
+    free_space: '/lmpcc/free_space'
+    obstacles_received: '/lmpcc/received_obstacles'
+    obstacles_predicted: '/lmpcc/predicted_obstacles'

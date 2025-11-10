@@ -1,0 +1,3 @@
+std_msgs/Header header
+follower_state current_state
+follower_state[] trajectory

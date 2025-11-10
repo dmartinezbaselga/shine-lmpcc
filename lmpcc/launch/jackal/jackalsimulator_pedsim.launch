@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+
+<launch>
+    <!-- Debug Info -->
+    <arg name="debug" default="false" />
+    <arg unless="$(arg debug)" name="launch_prefix" value="" />
+    <arg     if="$(arg debug)" name="launch_prefix" value="gdb --ex run --args" />
+    <arg name="debug_config_parameter" default="false"/>
+    <arg name="debug_kinematic_cal" default="false"/>
+    <arg name="debug_collision_detection" default="false"/>
+    <arg name="gui" default="false" />
+    <arg name="pedestrian_scenario" default="corridor" />
+    <arg name="overwrite_pedestrian_scenario" default="false" />
+    <arg name="project_name" default="" />
+    <arg name="rviz_config" default="jackal_homotopy" />
+    <arg name="simulation_factor" default="1.0"/> <!-- Speed up -->
+    <arg name="update_rate" default="20.0"/> <!-- Hz -->
+    <arg name="enable_interaction" default="2"/> <!-- 2 = disabled, 0 & 1 = enabled -->
+    <!-- <arg name="pedsim_scenario" default="corridor_opposite"/> -->
+    <!-- <param name="pedsim_scenario" value="$(arg pedsim_scenario)"/> -->
+
+  <!-- Pedsim ROS Simulator -->
+  <include file="$(find pedsim_simulator)/launch/simulator.launch">
+    <arg name="kbd_teleop" value="false"/>
+    <arg name="rqt_teleop" value="false"/>
+    <arg name="scene_file" value="$(find pedsim_simulator)scenarios/$(arg pedestrian_scenario).xml"/>
+    <arg name="with_robot" value="true"/>
+    <arg name="simulation_factor" value="$(arg simulation_factor)"/>
+    <arg name="update_rate" value="$(arg update_rate)"/>
+    <arg name="default_queue_size" value="2"/>
+    <arg name="max_robot_speed" value="1.5"/>
+    <arg name="robot_mode" value="$(arg enable_interaction)"/>
+    <arg name="enable_groups" value="false"/>
+    <arg name="pose_initial_x" value="5.0"/>
+    <arg name="pose_initial_y" value="5.0"/>
+    <arg name="pose_initial_theta" value="0.7"/>
+  </include>
+
+  <!-- Visualizer -->
+  <include file="$(find pedsim_visualizer)/launch/visualizer.launch"/>
+    <!-- Robot Simulation -->
+    <include file="$(find jackal_gazebo)/launch/jackal_world.launch">
+    <arg name="gui" value="$(arg gui)" />
+    </include>
+
+    <!-- Ped simulator -->
+    <!-- Ex. roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true pedestrian_scenario:="headon/1_middle.xml" -->
+    <!-- <include file="$(find pedestrian_simulator)/launch/simulation.launch">
+        <arg name="pedestrian_scenario" value="$(arg pedestrian_scenario)"/>
+        <arg name="overwrite_pedestrian_scenario" value="$(arg overwrite_pedestrian_scenario)"/>
+    </include> -->
+
+    <!-- Robot state -->
+    <include file="$(find mobile_robot_state_publisher)/launch/mobile_robot_publisher.launch">
+    </include>
+
+    <!-- The dynamics propagation server -->
+    <!-- <node pkg="lmpcc_solver" type="online_dynamics_server.py" name="online_dynamics_server" output="log"/> -->
+
+    <include file="$(find roadmap)/launch/roadmap.launch"/>
+
+    <!-- Controller -->
+    <rosparam command="load" file="$(find lmpcc)/config/jackal/jackal_simulator_parameters.yaml"/>
+    <rosparam command="load" file="$(find lmpcc)/config/jackal/jackal_simulator_topics.yaml"/>
+    <rosparam command="load" file="$(find lmpcc)/config/path.yaml"/>
+    <rosparam command="load" file="$(find lmpcc)/config/jackal/guidance_planner.yaml"/>
+    
+    <!-- Autotuning results -->
+    <!-- <rosparam command="load" file="$(find lmpcc)/config/jackal/autotuned-homotopy.yaml"/> -->
+    <!-- Ongoing autotuning -->
+    <rosparam command="load" file="$(find lmpcc)/config/jackal/jackalsimulator_autotune_parameters.yaml"/>
+
+    <!-- Overwritten parameters for an experiment -->
+    <rosparam command="load" file="$(find lmpcc)/config/jackal/experiment_parameters.yaml"/>
+
+    <!-- Naming of output data for LMPCC -->
+    <param name="recording/experiment" value="$(arg pedestrian_scenario)" if="$(arg overwrite_pedestrian_scenario)"/>
+    <param name="recording/project_name" value="$(arg project_name)"/>
+
+    <node pkg="lmpcc" type="lmpcc_node" name="lmpcc_node" cwd="node" respawn="false" output="screen" required="true"/>
+    <node pkg="lmpcc" type="collision_checker_node" name="collision_checker_node" respawn="false" output="log" required="true"/>
+
+    <!-- configured RVIZ and RQT Reconfigure -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find lmpcc)/rviz_config/jackal/$(arg rviz_config).rviz" output="log"/>
+
+    <node pkg="rqt_reconfigure" type="rqt_reconfigure" name="rqt_reconfigure" cwd="node" respawn="false" output="screen"/>
+    
+</launch>  

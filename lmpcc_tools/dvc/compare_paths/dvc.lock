@@ -1,0 +1,474 @@
+schema: '2.0'
+stages:
+  path_comparison_run@paths-6:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py
+      parameters 6 False
+    - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true
+      pedestrian_scenario:="random_fast/16_straight.xml" project_name:="../../../../../../../Documents/publications/multi-mpc-2023/results/data"
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py
+      restore 6
+    deps:
+    - path: lmpcc_tools/scripts/experiments/path_comparison/set_parameters.py
+      md5: b7de3fe2fbef8551844a75aac11fbe41
+      size: 769
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/6paths-random_fast-16_straight_GMPCC.txt
+      md5: 710b563d69fa0c54f95372ed69d088da
+      size: 257044075
+  path_comparison_metrics@paths-6:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 metrics.py
+      6paths-random_fast-16_straight GMPCC
+    deps:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/6paths-random_fast-16_straight_GMPCC.txt
+      md5: 710b563d69fa0c54f95372ed69d088da
+      size: 257044075
+    - path: lmpcc_tools/scripts/experiments/path_comparison/main.py
+      md5: 4a08043c49d03cdd36bc67bbfb389959
+      size: 2889
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/6paths-random_fast-16_straight/GMPCC.json
+      md5: 1bea4113cd11daf5b387a91778e8e838
+      size: 2065
+  path_comparison_run@paths-5:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py
+      parameters 5 False
+    - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true
+      pedestrian_scenario:="random_fast/16_straight.xml" project_name:="../../../../../../../Documents/publications/multi-mpc-2023/results/data"
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py
+      restore 5
+    deps:
+    - path: lmpcc_tools/scripts/experiments/path_comparison/set_parameters.py
+      md5: b7de3fe2fbef8551844a75aac11fbe41
+      size: 769
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/5paths-random_fast-16_straight_GMPCC.txt
+      md5: ddf2ae7b31e13e913618770d6b84bbc0
+      size: 224917235
+  path_comparison_run@paths-1:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py
+      parameters 1 False
+    - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true
+      pedestrian_scenario:="random_fast/16_straight.xml" project_name:="../../../../../../../Documents/publications/multi-mpc-2023/results/data"
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py
+      restore 1
+    deps:
+    - path: lmpcc_tools/scripts/experiments/path_comparison/set_parameters.py
+      md5: b7de3fe2fbef8551844a75aac11fbe41
+      size: 769
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/1paths-random_fast-16_straight_GMPCC.txt
+      md5: db66d1a1dea36c06d8cb9f611b45174d
+      size: 117527600
+  path_comparison_metrics@paths-1:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 metrics.py
+      1paths-random_fast-16_straight GMPCC
+    deps:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/1paths-random_fast-16_straight_GMPCC.txt
+      md5: db66d1a1dea36c06d8cb9f611b45174d
+      size: 117527600
+    - path: lmpcc_tools/scripts/experiments/path_comparison/main.py
+      md5: 4a08043c49d03cdd36bc67bbfb389959
+      size: 2889
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/1paths-random_fast-16_straight/GMPCC.json
+      md5: 22ce7798b285f6961d4ed41aa6de9f25
+      size: 2034
+  path_comparison_run@paths-4:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py
+      parameters 4 False
+    - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true
+      pedestrian_scenario:="random_fast/16_straight.xml" project_name:="../../../../../../../Documents/publications/multi-mpc-2023/results/data"
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py
+      restore 4
+    deps:
+    - path: lmpcc_tools/scripts/experiments/path_comparison/set_parameters.py
+      md5: b7de3fe2fbef8551844a75aac11fbe41
+      size: 769
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/4paths-random_fast-16_straight_GMPCC.txt
+      md5: 094e9c289fb42d26a9b1d6c9e3aac0b3
+      size: 194824778
+  path_comparison_metrics@paths-4:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 metrics.py
+      4paths-random_fast-16_straight GMPCC
+    deps:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/4paths-random_fast-16_straight_GMPCC.txt
+      md5: 094e9c289fb42d26a9b1d6c9e3aac0b3
+      size: 194824778
+    - path: lmpcc_tools/scripts/experiments/path_comparison/main.py
+      md5: 4a08043c49d03cdd36bc67bbfb389959
+      size: 2889
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/4paths-random_fast-16_straight/GMPCC.json
+      md5: f8741f279dbfe1cbb9aab20f6c05e8d3
+      size: 2052
+  path_comparison_run@paths-3:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py
+      parameters 3 False
+    - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true
+      pedestrian_scenario:="random_fast/16_straight.xml" project_name:="../../../../../../../Documents/publications/multi-mpc-2023/results/data"
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py
+      restore 3
+    deps:
+    - path: lmpcc_tools/scripts/experiments/path_comparison/set_parameters.py
+      md5: b7de3fe2fbef8551844a75aac11fbe41
+      size: 769
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/3paths-random_fast-16_straight_GMPCC.txt
+      md5: b7855dfd292abb42b0b86ee9701180f5
+      size: 169185618
+  path_comparison_run@paths-2:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py
+      parameters 2 False
+    - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true
+      pedestrian_scenario:="random_fast/16_straight.xml" project_name:="../../../../../../../Documents/publications/multi-mpc-2023/results/data"
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py
+      restore 2
+    deps:
+    - path: lmpcc_tools/scripts/experiments/path_comparison/set_parameters.py
+      md5: b7de3fe2fbef8551844a75aac11fbe41
+      size: 769
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/2paths-random_fast-16_straight_GMPCC.txt
+      md5: 6eb85d9fb586ab8b50da5e31f82aba57
+      size: 142453398
+  path_comparison_metrics@paths-5:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 metrics.py
+      5paths-random_fast-16_straight GMPCC
+    deps:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/5paths-random_fast-16_straight_GMPCC.txt
+      md5: ddf2ae7b31e13e913618770d6b84bbc0
+      size: 224917235
+    - path: lmpcc_tools/scripts/experiments/path_comparison/main.py
+      md5: 4a08043c49d03cdd36bc67bbfb389959
+      size: 2889
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/5paths-random_fast-16_straight/GMPCC.json
+      md5: b7bb6582f6d87c0cb1b4143e890d740c
+      size: 2062
+  path_comparison_metrics@paths-3:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 metrics.py
+      3paths-random_fast-16_straight GMPCC
+    deps:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/3paths-random_fast-16_straight_GMPCC.txt
+      md5: b7855dfd292abb42b0b86ee9701180f5
+      size: 169185618
+    - path: lmpcc_tools/scripts/experiments/path_comparison/main.py
+      md5: 4a08043c49d03cdd36bc67bbfb389959
+      size: 2889
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/3paths-random_fast-16_straight/GMPCC.json
+      md5: 1c4085fc38a50e41ab5a07a8c9f16d6e
+      size: 2060
+  path_comparison_metrics@paths-2:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 metrics.py
+      2paths-random_fast-16_straight GMPCC
+    deps:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/2paths-random_fast-16_straight_GMPCC.txt
+      md5: 6eb85d9fb586ab8b50da5e31f82aba57
+      size: 142453398
+    - path: lmpcc_tools/scripts/experiments/path_comparison/main.py
+      md5: 4a08043c49d03cdd36bc67bbfb389959
+      size: 2889
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/2paths-random_fast-16_straight/GMPCC.json
+      md5: c4497e07329b40054839178b3acaca99
+      size: 2064
+  path_comparison_run_with_original@paths-1:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py
+      parameters 1 True
+    - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true
+      pedestrian_scenario:="random_fast/16_straight.xml" project_name:="../../../../../../../Documents/publications/multi-mpc-2023/results/data"
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py
+      restore 1
+    deps:
+    - path: lmpcc_tools/scripts/experiments/path_comparison/set_parameters.py
+      md5: b7de3fe2fbef8551844a75aac11fbe41
+      size: 769
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/1pathsO-random_fast-16_straight_GMPCC.txt
+      md5: 91e17d7d9e384b7b4d6c68eb4940ef8b
+      size: 144077397
+  path_comparison_run_with_original@paths-5:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py
+      parameters 5 True
+    - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true
+      pedestrian_scenario:="random_fast/16_straight.xml" project_name:="../../../../../../../Documents/publications/multi-mpc-2023/results/data"
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py
+      restore 5
+    deps:
+    - path: lmpcc_tools/scripts/experiments/path_comparison/set_parameters.py
+      md5: b7de3fe2fbef8551844a75aac11fbe41
+      size: 769
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/5pathsO-random_fast-16_straight_GMPCC.txt
+      md5: 20741cb1f8cd8a62866bbb51968f2724
+      size: 246032126
+  path_comparison_run_with_original@paths-2:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py
+      parameters 2 True
+    - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true
+      pedestrian_scenario:="random_fast/16_straight.xml" project_name:="../../../../../../../Documents/publications/multi-mpc-2023/results/data"
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py
+      restore 2
+    deps:
+    - path: lmpcc_tools/scripts/experiments/path_comparison/set_parameters.py
+      md5: b7de3fe2fbef8551844a75aac11fbe41
+      size: 769
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/2pathsO-random_fast-16_straight_GMPCC.txt
+      md5: a6642a3eb5b9147bb93a8122abb67a83
+      size: 167972871
+  path_comparison_metrics_with_original@paths-2:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 metrics.py
+      2pathsO-random_fast-16_straight GMPCC
+    deps:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/2pathsO-random_fast-16_straight_GMPCC.txt
+      md5: a6642a3eb5b9147bb93a8122abb67a83
+      size: 167972871
+    - path: lmpcc_tools/scripts/experiments/path_comparison/main.py
+      md5: 4a08043c49d03cdd36bc67bbfb389959
+      size: 2889
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/2pathsO-random_fast-16_straight/GMPCC.json
+      md5: 1569be04dfa8c6bf3f7d39eac3491872
+      size: 2035
+  path_comparison_run_with_original@paths-6:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py
+      parameters 6 True
+    - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true
+      pedestrian_scenario:="random_fast/16_straight.xml" project_name:="../../../../../../../Documents/publications/multi-mpc-2023/results/data"
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py
+      restore 6
+    deps:
+    - path: lmpcc_tools/scripts/experiments/path_comparison/set_parameters.py
+      md5: b7de3fe2fbef8551844a75aac11fbe41
+      size: 769
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/6pathsO-random_fast-16_straight_GMPCC.txt
+      md5: fb6540c6fabc5ec782721024675445a8
+      size: 276979750
+  path_comparison_run_with_original@paths-3:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py
+      parameters 3 True
+    - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true
+      pedestrian_scenario:="random_fast/16_straight.xml" project_name:="../../../../../../../Documents/publications/multi-mpc-2023/results/data"
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py
+      restore 3
+    deps:
+    - path: lmpcc_tools/scripts/experiments/path_comparison/set_parameters.py
+      md5: b7de3fe2fbef8551844a75aac11fbe41
+      size: 769
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/3pathsO-random_fast-16_straight_GMPCC.txt
+      md5: 211ae0f317e9a539340377cc64581c53
+      size: 197988483
+  path_comparison_metrics_with_original@paths-3:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 metrics.py
+      3pathsO-random_fast-16_straight GMPCC
+    deps:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/3pathsO-random_fast-16_straight_GMPCC.txt
+      md5: 211ae0f317e9a539340377cc64581c53
+      size: 197988483
+    - path: lmpcc_tools/scripts/experiments/path_comparison/main.py
+      md5: 4a08043c49d03cdd36bc67bbfb389959
+      size: 2889
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/3pathsO-random_fast-16_straight/GMPCC.json
+      md5: a419bf3b736d13904e1fede698826ebd
+      size: 2059
+  path_comparison_metrics_with_original@paths-5:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 metrics.py
+      5pathsO-random_fast-16_straight GMPCC
+    deps:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/5pathsO-random_fast-16_straight_GMPCC.txt
+      md5: 20741cb1f8cd8a62866bbb51968f2724
+      size: 246032126
+    - path: lmpcc_tools/scripts/experiments/path_comparison/main.py
+      md5: 4a08043c49d03cdd36bc67bbfb389959
+      size: 2889
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/5pathsO-random_fast-16_straight/GMPCC.json
+      md5: 54dbcca0541dc15e93d4b9d7c4f6add6
+      size: 2064
+  path_comparison_run_with_original@paths-4:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py
+      parameters 4 True
+    - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true
+      pedestrian_scenario:="random_fast/16_straight.xml" project_name:="../../../../../../../Documents/publications/multi-mpc-2023/results/data"
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py
+      restore 4
+    deps:
+    - path: lmpcc_tools/scripts/experiments/path_comparison/set_parameters.py
+      md5: b7de3fe2fbef8551844a75aac11fbe41
+      size: 769
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/4pathsO-random_fast-16_straight_GMPCC.txt
+      md5: 6db17b042e0db0f3b6a5988f27fb6abb
+      size: 220120175
+  path_comparison_metrics_with_original@paths-4:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 metrics.py
+      4pathsO-random_fast-16_straight GMPCC
+    deps:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/4pathsO-random_fast-16_straight_GMPCC.txt
+      md5: 6db17b042e0db0f3b6a5988f27fb6abb
+      size: 220120175
+    - path: lmpcc_tools/scripts/experiments/path_comparison/main.py
+      md5: 4a08043c49d03cdd36bc67bbfb389959
+      size: 2889
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/4pathsO-random_fast-16_straight/GMPCC.json
+      md5: 42c382904c571e1ede835ce91f31e269
+      size: 2062
+  path_comparison_metrics_with_original@paths-1:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 metrics.py
+      1pathsO-random_fast-16_straight GMPCC
+    deps:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/1pathsO-random_fast-16_straight_GMPCC.txt
+      md5: 91e17d7d9e384b7b4d6c68eb4940ef8b
+      size: 144077397
+    - path: lmpcc_tools/scripts/experiments/path_comparison/main.py
+      md5: 4a08043c49d03cdd36bc67bbfb389959
+      size: 2889
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/1pathsO-random_fast-16_straight/GMPCC.json
+      md5: 7c1b8de98b17a08c7ffae0cd16609446
+      size: 2023
+  path_comparison_metrics_with_original@paths-6:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 metrics.py
+      6pathsO-random_fast-16_straight GMPCC
+    deps:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/6pathsO-random_fast-16_straight_GMPCC.txt
+      md5: fb6540c6fabc5ec782721024675445a8
+      size: 276979750
+    - path: lmpcc_tools/scripts/experiments/path_comparison/main.py
+      md5: 4a08043c49d03cdd36bc67bbfb389959
+      size: 2889
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/6pathsO-random_fast-16_straight/GMPCC.json
+      md5: d34d13a3149235493c8667ca3f887e10
+      size: 2047
+  path_comparison_run_with_original@paths-0:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py
+      parameters 0 True
+    - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true
+      pedestrian_scenario:="random_fast/16_straight.xml" project_name:="../../../../../../../Documents/publications/multi-mpc-2023/results/data"
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py
+      restore 0
+    deps:
+    - path: lmpcc_tools/scripts/experiments/path_comparison/set_parameters.py
+      md5: b7de3fe2fbef8551844a75aac11fbe41
+      size: 769
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/0pathsO-random_fast-16_straight_GMPCC.txt
+      md5: f420d99e25062480d75be20911f1aa93
+      size: 121453411
+  create_plots:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py
+      process False 6
+    deps:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/1paths-random_fast-16_straight/GMPCC.json
+      md5: 22ce7798b285f6961d4ed41aa6de9f25
+      size: 2034
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/2paths-random_fast-16_straight/GMPCC.json
+      md5: c4497e07329b40054839178b3acaca99
+      size: 2064
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/3paths-random_fast-16_straight/GMPCC.json
+      md5: 1c4085fc38a50e41ab5a07a8c9f16d6e
+      size: 2060
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/4paths-random_fast-16_straight/GMPCC.json
+      md5: f8741f279dbfe1cbb9aab20f6c05e8d3
+      size: 2052
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/5paths-random_fast-16_straight/GMPCC.json
+      md5: b7bb6582f6d87c0cb1b4143e890d740c
+      size: 2062
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/6paths-random_fast-16_straight/GMPCC.json
+      md5: 1bea4113cd11daf5b387a91778e8e838
+      size: 2065
+    - path: lmpcc_tools/scripts/experiments/path_comparison/main.py
+      md5: 6d09704e5d034d17cb9d6213a4bf148c
+      size: 3336
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/figures/path_comparison/path_duration.pdf
+      md5: da0ef30c8183e15967e624a377d5c956
+      size: 42384
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/figures/path_comparison/path_infeasible.pdf
+      md5: 547b1cb08b6be4eff0a3179b67429ef9
+      size: 41022
+  path_comparison_metrics_with_original@paths-0:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 metrics.py
+      0pathsO-random_fast-16_straight GMPCC
+    deps:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/0pathsO-random_fast-16_straight_GMPCC.txt
+      md5: f420d99e25062480d75be20911f1aa93
+      size: 121453411
+    - path: lmpcc_tools/scripts/experiments/path_comparison/main.py
+      md5: 4a08043c49d03cdd36bc67bbfb389959
+      size: 2889
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/0pathsO-random_fast-16_straight/GMPCC.json
+      md5: eb5ddb6a3ecb7fb7147bda4912f8bc24
+      size: 1947
+  create_plots_with_original:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py
+      process True 6
+    deps:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/0pathsO-random_fast-16_straight/GMPCC.json
+      md5: eb5ddb6a3ecb7fb7147bda4912f8bc24
+      size: 1947
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/1pathsO-random_fast-16_straight/GMPCC.json
+      md5: 7c1b8de98b17a08c7ffae0cd16609446
+      size: 2023
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/2pathsO-random_fast-16_straight/GMPCC.json
+      md5: 1569be04dfa8c6bf3f7d39eac3491872
+      size: 2035
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/3pathsO-random_fast-16_straight/GMPCC.json
+      md5: a419bf3b736d13904e1fede698826ebd
+      size: 2059
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/4pathsO-random_fast-16_straight/GMPCC.json
+      md5: 42c382904c571e1ede835ce91f31e269
+      size: 2062
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/5pathsO-random_fast-16_straight/GMPCC.json
+      md5: 54dbcca0541dc15e93d4b9d7c4f6add6
+      size: 2064
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/6pathsO-random_fast-16_straight/GMPCC.json
+      md5: d34d13a3149235493c8667ca3f887e10
+      size: 2047
+    - path: lmpcc_tools/scripts/experiments/path_comparison/main.py
+      md5: 6d09704e5d034d17cb9d6213a4bf148c
+      size: 3336
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/figures/path_comparison/path_duration_wo.pdf
+      md5: f83bb899c23839dc420b88ec36f59811
+      size: 43760
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/figures/path_comparison/path_infeasible_wo.pdf
+      md5: 36b832d4b5f7098145636d7ae84c363e
+      size: 42308

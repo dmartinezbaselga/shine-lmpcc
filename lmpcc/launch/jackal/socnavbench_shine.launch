@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<launch>
+    <!-- Debug Info -->
+    <arg name="debug" default="false" />
+    <arg unless="$(arg debug)" name="launch_prefix" value="" />
+    <arg     if="$(arg debug)" name="launch_prefix" value="gdb --ex run --args" />
+    <arg name="debug_config_parameter" default="false"/>
+    <arg name="debug_kinematic_cal" default="false"/>
+    <arg name="debug_collision_detection" default="false"/>
+    <arg name="gui" default="false" />
+    <arg name="pedestrian_scenario" default="corridor" />
+    <arg name="overwrite_pedestrian_scenario" default="false" />
+    <arg name="project_name" default="" />
+    <arg name="rviz_config" default="jackal_homotopy" />
+    <arg name="silent" default="false"/>
+
+    <node name="shine_server" pkg="lmpcc" type="run_guidance_server.sh" output="log" if="$(arg silent)"/>
+    <node name="shine_server" pkg="lmpcc" type="run_guidance_server.sh" output="screen" unless="$(arg silent)"/>
+
+
+
+    <!-- Controller -->
+    <rosparam command="load" file="$(find lmpcc)/config/jackal/jackal_simulator_parameters.yaml"/>
+    <rosparam command="load" file="$(find lmpcc)/config/jackal/jackal_simulator_topics.yaml"/>
+    <rosparam command="load" file="$(find lmpcc)/config/path.yaml"/>
+    <rosparam command="load" file="$(find lmpcc)/config/jackal/guidance_planner.yaml"/>
+    
+    <!-- Autotuning results -->
+    <!-- <rosparam command="load" file="$(find lmpcc)/config/jackal/autotuned-homotopy.yaml"/> -->
+    <!-- Ongoing autotuning -->
+    <rosparam command="load" file="$(find lmpcc)/config/jackal/jackalsimulator_autotune_parameters.yaml"/>
+
+    <!-- Overwritten parameters for an experiment -->
+    <rosparam command="load" file="$(find lmpcc)/config/jackal/experiment_parameters.yaml"/>
+
+    <node pkg="lmpcc" type="lmpcc_server" name="" cwd="node" respawn="false" output="screen" required="true" />
+
+    <!-- configured RVIZ and RQT Reconfigure -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find lmpcc)/rviz_config/jackal/$(arg rviz_config).rviz" output="log"/>
+    
+</launch>  

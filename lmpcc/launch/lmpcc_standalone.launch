@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<launch>
+
+    <rosparam command="load" file="$(find lmpcc)/config/jackal/jackal_simulator_parameters.yaml"/>
+    <rosparam command="load" file="$(find lmpcc)/config/jackal/jackal_simulator_topics.yaml"/>
+    <node pkg="lmpcc" type="lmpcc_node" name="lmpcc_node" cwd="node" respawn="false" output="screen">
+    </node>
+
+</launch>  

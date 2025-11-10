@@ -1,0 +1,193 @@
+# Run GMPCC for various number of paths (with and without the original lmpcc planner) and plot task duration and infeasibility statistics
+vars:
+  - method:
+      name: GMPCC
+      project: guidance-journal-2023
+      project_folder: "../../../../../../../Documents/publications/multi-mpc-2023/results"
+
+stages:
+  path_comparison_run:
+    foreach:
+      paths-6:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_paths: 6
+      paths-5:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_paths: 5
+      paths-4:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_paths: 4
+      paths-3:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_paths: 3
+      paths-2:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_paths: 2
+      paths-1:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_paths: 1
+    do:
+      wdir: ../../..
+      deps:
+        - lmpcc_tools/scripts/experiments/path_comparison/set_parameters.py
+      cmd:
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py parameters ${item.num_paths} False # Load the parameters
+        - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true pedestrian_scenario:="${item.file}" project_name:="${method.project_folder}/data"
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py restore ${item.num_paths} # Load the parameters
+      outs:
+        - lmpcc_tools/scripts/data/${method.project_folder}/data/${item.num_paths}paths-${item.name}_${method.name}.txt 
+
+  path_comparison_metrics:
+    foreach:
+      paths-6:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_paths: 6
+      paths-5:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_paths: 5
+      paths-4:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_paths: 4
+      paths-3:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_paths: 3
+      paths-2:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_paths: 2
+      paths-1:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_paths: 1
+    do:
+      wdir: ../../..
+      deps:
+        - lmpcc_tools/scripts/data/${method.project_folder}/data/${item.num_paths}paths-${item.name}_${method.name}.txt 
+      cmd:
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 metrics.py ${item.num_paths}paths-${item.name} ${method.name}
+      outs:
+        - lmpcc_tools/scripts/data/${method.project_folder}/metrics/${item.num_paths}paths-${item.name}/${method.name}.json 
+  
+  path_comparison_run_with_original:
+    foreach:
+      paths-6:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_paths: 6
+      paths-5:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_paths: 5
+      paths-4:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_paths: 4
+      paths-3:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_paths: 3
+      paths-2:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_paths: 2
+      paths-1:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_paths: 1
+      paths-0:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_paths: 0
+    do:
+      wdir: ../../..
+      deps:
+        - lmpcc_tools/scripts/experiments/path_comparison/set_parameters.py
+      cmd:
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py parameters ${item.num_paths} True # Load the parameters
+        - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true pedestrian_scenario:="${item.file}" project_name:="${method.project_folder}/data"
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py restore ${item.num_paths} # Load the parameters
+      outs:
+        - lmpcc_tools/scripts/data/${method.project_folder}/data/${item.num_paths}pathsO-${item.name}_${method.name}.txt 
+
+  path_comparison_metrics_with_original:
+    foreach:
+      paths-6:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_paths: 6
+      paths-5:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_paths: 5
+      paths-4:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_paths: 4
+      paths-3:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_paths: 3
+      paths-2:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_paths: 2
+      paths-1:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_paths: 1      
+      paths-0:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_paths: 0
+    do:
+      wdir: ../../..
+      deps:
+        - lmpcc_tools/scripts/data/${method.project_folder}/data/${item.num_paths}pathsO-${item.name}_${method.name}.txt 
+      cmd:
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 metrics.py ${item.num_paths}pathsO-${item.name} ${method.name}
+      outs:
+        - lmpcc_tools/scripts/data/${method.project_folder}/metrics/${item.num_paths}pathsO-${item.name}/${method.name}.json 
+
+  create_plots:
+    wdir: ../../..
+    deps:       
+      - lmpcc_tools/scripts/data/${method.project_folder}/metrics/1paths-random_fast-16_straight/GMPCC.json 
+      - lmpcc_tools/scripts/data/${method.project_folder}/metrics/2paths-random_fast-16_straight/GMPCC.json 
+      - lmpcc_tools/scripts/data/${method.project_folder}/metrics/3paths-random_fast-16_straight/GMPCC.json 
+      - lmpcc_tools/scripts/data/${method.project_folder}/metrics/4paths-random_fast-16_straight/GMPCC.json 
+      - lmpcc_tools/scripts/data/${method.project_folder}/metrics/5paths-random_fast-16_straight/GMPCC.json 
+      - lmpcc_tools/scripts/data/${method.project_folder}/metrics/6paths-random_fast-16_straight/GMPCC.json 
+      - lmpcc_tools/scripts/experiments/path_comparison/main.py
+
+    cmd:
+      - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py process False 6
+    outs:
+      - lmpcc_tools/scripts/data/${method.project_folder}/figures/path_comparison/path_duration.pdf
+      - lmpcc_tools/scripts/data/${method.project_folder}/figures/path_comparison/path_infeasible.pdf
+
+  create_plots_with_original:
+    wdir: ../../..
+    deps: 
+      - lmpcc_tools/scripts/data/${method.project_folder}/metrics/0pathsO-random_fast-16_straight/GMPCC.json 
+      - lmpcc_tools/scripts/data/${method.project_folder}/metrics/1pathsO-random_fast-16_straight/GMPCC.json 
+      - lmpcc_tools/scripts/data/${method.project_folder}/metrics/2pathsO-random_fast-16_straight/GMPCC.json 
+      - lmpcc_tools/scripts/data/${method.project_folder}/metrics/3pathsO-random_fast-16_straight/GMPCC.json 
+      - lmpcc_tools/scripts/data/${method.project_folder}/metrics/4pathsO-random_fast-16_straight/GMPCC.json 
+      - lmpcc_tools/scripts/data/${method.project_folder}/metrics/5pathsO-random_fast-16_straight/GMPCC.json 
+      - lmpcc_tools/scripts/data/${method.project_folder}/metrics/6pathsO-random_fast-16_straight/GMPCC.json  
+      - lmpcc_tools/scripts/experiments/path_comparison/main.py      
+    cmd:
+      - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/path_comparison/main.py process True 6
+    outs:
+      - lmpcc_tools/scripts/data/${method.project_folder}/figures/path_comparison/path_duration_wo.pdf
+      - lmpcc_tools/scripts/data/${method.project_folder}/figures/path_comparison/path_infeasible_wo.pdf

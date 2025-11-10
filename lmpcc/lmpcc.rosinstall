@@ -1,0 +1,24 @@
+- git:
+    local-name: simulator
+    uri: git@gitlab.3me.tudelft.nl:bdebrito/simulator.git
+    version: next_level
+- git:
+    local-name: lmpcc
+    uri: https://github.com/bbrito/lmpcc.git
+    version: carla_forces
+- git:
+    local-name: mobile_robot_state_publisher
+    uri: https://github.com/bbrito/mobile_robot_state_publisher.git
+    version: prius
+- git:
+    local-name: lmpcc_msgs
+    uri: https://github.com/bbrito/lmpcc_msgs.git
+    version: master
+- git:
+    local-name: lmpcc_obstacle_feed
+    uri: https://github.com/bbrito/lmpcc_obstacle_feed.git
+    version: rrt
+- git:
+    local-name: gazebo_ros_pkgs
+    uri: git@github.com:bbrito/gazebo_ros_pkgs.git
+    version: kinetic-devel

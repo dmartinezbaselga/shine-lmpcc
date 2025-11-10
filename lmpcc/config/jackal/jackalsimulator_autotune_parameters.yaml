@@ -1,0 +1,15 @@
+prm:
+  max_acceleration: 2.035266995167021
+  # selection_weights:
+    # consistency: 0.24904675216524505
+  # weights:
+  #   collision: 0. #2.764776041069778
+  #   geometric: 1. #48.390938542029375
+  #   smoothness: 0. #64.8423056282039
+  #   velocity_tracking: 0. #4.01053887323626
+# weights:
+#   acceleration: 0.33884642106128104
+#   angular velocity: 0.8464139557277561
+#   contour: 0.05 #0.2955674369951251 WAS THIS FOR PREVIOUS EXPERIMENTS (non interactive)
+#   lag: 0.7528763578706813
+#   velocity: 0.5522041441147563

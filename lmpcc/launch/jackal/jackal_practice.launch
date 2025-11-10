@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+
+<launch>
+    <!-- Debug Info -->
+    <arg name="debug" default="false" />
+    <arg unless="$(arg debug)" name="launch_prefix" value="" />
+    <arg     if="$(arg debug)" name="launch_prefix" value="gdb --ex run --args" />
+    <arg name="debug_config_parameter" default="false"/>
+    <arg name="debug_kinematic_cal" default="false"/>
+    <arg name="debug_collision_detection" default="false"/>
+    <arg name="gui" default="false" />
+
+    <!-- The reference path map file -->
+    <arg name="use_roadmap" default="false"/>
+
+    <!-- The pedestrian scenario file -->
+    <arg name="pedestrian_scenario" default="corridor_opposite" />
+    <arg name="overwrite_pedestrian_scenario" default="false" />
+
+    <arg name="project_name" default="" />
+    <arg name="rviz_config" default="jackal_homotopy" />
+
+    <!-- Robot Simulation -->
+    <include file="$(find jackal_gazebo)/launch/jackal_world.launch">
+        <arg name="gui" value="$(arg gui)" />
+    </include>
+    <include file="$(find mobile_robot_state_publisher)/launch/mobile_robot_publisher.launch"/>
+
+
+    <!-- Fake optitrack simulated pedestrians -->
+    <!-- Ex. roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true pedestrian_scenario:="headon/1_middle.xml" -->
+    <include file="$(find pedestrian_simulator)/launch/simulation.launch">
+        <arg name="pedestrian_scenario" value="$(arg pedestrian_scenario)"/>
+        <arg name="overwrite_pedestrian_scenario" value="$(arg overwrite_pedestrian_scenario)"/>
+    </include>
+    <include file="$(find obstacle_estimator)/launch/obstacle_prediction_multiple.launch"/>
+    
+
+    <include file="$(find lmpcc)/launch/jackal/jackal.launch" pass_all_args="true"/>
+    <node pkg="lmpcc" type="collision_checker_node" name="collision_checker_node" respawn="false" output="screen" required="true"/>
+
+    <!-- Publish Random Goals -->
+    <node pkg="lmpcc_tools" type="goal_publishing_node.py" name="goal_publishing_node" respawn="false" output="screen" required="true" args="--n_goals 10 --publish" unless="$(arg use_roadmap)"/>
+   
+    <!-- Publish a standard reference path -->
+    <include file="$(find roadmap)/launch/roadmap.launch" if="$(arg use_roadmap)">
+        <arg name="config_file" value="$(find lmpcc)/config/jackal/jackal_roadmap.yaml"/>
+    </include>
+
+    <!-- configured RVIZ and RQT Reconfigure -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find lmpcc)/rviz_config/jackal/$(arg rviz_config).rviz" output="log"/>
+	
+</launch>  

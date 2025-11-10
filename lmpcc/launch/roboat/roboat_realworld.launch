@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+
+<launch>
+    <!-- Debug Info -->
+    <arg name="debug" default="false" />
+    <arg unless="$(arg debug)" name="launch_prefix" value="" />
+    <arg if="$(arg debug)" name="launch_prefix" value="gdb --ex run --args" />
+
+    <!-- Variables -->
+    <arg name="gui" default="false" />
+    <arg name="use_quarterscale_roboat_sim" value="false" />
+    <arg name="run_nmpc" default="false" />
+    <arg name="boat_type" default="quarter"/>
+    <arg name="run_planners_Roboat" default="false"/>
+
+    <!-- Launch quarter scale Roboat setup for real world -->
+    <include file="$(find roboat_navigation)/launch/run_online.launch">
+        <arg name="run_on_bag" value="false"/>
+        <arg name="run_rviz" value="true"/>
+        <arg name="run_cloud" value="true"/>
+        <arg name="run_real_thrusters" value="true"/>
+        <arg name="run_nmpc" value="$(arg run_nmpc)"/>
+        <arg name="boat_type" value="$(arg boat_type)"/>
+        <arg name="run_planners" value="$(arg run_planners_Roboat)"/>
+    </include>
+
+    <!-- Load configs for LMPCC -->
+    <rosparam command="load" file="$(find lmpcc)/config/roboat/roboat_predictive_config_parameter.yaml"/>
+    <rosparam command="load" file="$(find lmpcc)/config/roboat/roboat_topics.yaml"/>
+    <rosparam command="load" file="$(find lmpcc)/config/path.yaml"/> 
+
+    <!-- Start LMPCC node -->
+    <group unless="$(arg run_nmpc)">
+        <node pkg="lmpcc" type="lmpcc_node" name="lmpcc_node" cwd="node" respawn="false" output="screen">
+            <rosparam file="$(find lmpcc)/config/costmap_static_params.yaml" command="load" ns="costmap" />
+        </node>
+    </group>
+
+    <!-- Start node for static obstacles -->
+    <include file="$(find linear_constraint_generation)/launch/static_obstacles.launch"> </include>
+
+    <node name = "my_rqt_dashboard" pkg = "rqt_gui" type = "rqt_gui" respawn = "false" output = "screen"
+          args = "--perspective-file $(find roboat_social_simulator)/config/social_simulator.perspective"/>
+	
+</launch>  

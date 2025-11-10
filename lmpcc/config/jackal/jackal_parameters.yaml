@@ -1,0 +1,147 @@
+# Debugging
+debug_output: false # Prints lots of information (use when debugging!)
+debug_solver: false # Prints lots of solver information (use when debugging only!)
+debug_velocity: 0.0      # Adds to the velocity estimation for debugging
+debug_colors: false
+debug_print_plan: false
+
+solver_timeout: 40 # (ms), use 0 for disabled
+
+# Simulation mode
+simulation_mode: false
+enable_external_weights: true
+use_follower: false
+
+# Initial weights
+reference_velocity: 1.5
+weights:
+  acceleration: 0.15
+  angular_velocity: 0.25
+  contour: 0.5
+  lag: 0.1
+  velocity: 0.3 # 0.5
+
+# Main Settings #
+# Synchronize
+sync_mode: true
+clock_frequency: 20 # in Hz
+
+# When true starts planning immediately
+auto_enable_plan: true
+synchronized_actuation: false # Should the controller only actuate after a full control cycle?
+shift_plan_forward: false
+
+# Physical Parameters
+enable_output: true   # Enables physical output (cannot be changed when running)
+deceleration_at_infeasible: 1.0
+
+# Recording
+recording:   
+      enable_recording: true
+      number_of_experiments: 150
+      per_time: 
+        enable: true            # Time is default enabled over experiment
+        every_x_iterations: 1000000 #200  # Save every this number of iterations
+      per_experiment:
+        enable: false
+        every_x_experiments: -1  # Set to -1 to use the number of experiments
+      # experiment: 'random-16_straight' # Creates a folder with this name
+      experiment: 'real' # Creates a folder with this name
+      add_timestamp: false           # Add timestamps to the file name
+      time_out: 40
+
+# Kinematic chain parameter
+robot_base_link: base_link
+target_frame: map # world fixed frame but will be changed according to robot_state_topic
+
+# Road parameters (Not used)
+path:
+  enable_clothoid_interpolation: false
+  halfspaces_from_spline: false
+
+road:
+  two_way: false
+  width_right: 2.0
+  width_left: 2.0
+
+# Parameters for collision constraints
+obstacles: 
+      max_obstacles: 5 # Set to -1 to use carla/scenario/method/max_obstacles instead
+      radius: 0.3 #0.3 #0.2         # Radius of the obstacles PEDSIM = 0.35
+      safe_radius: 0.4 #0.4
+      visualize_ellipsoids: true
+
+robot:
+      length: 0.65 # Length of the vehicle
+      width: 0.65 # Width of the vehicle
+      com_to_back: 0.325 # Distance from the sensed position to the center of mass?
+
+debug:
+  boolean1: false # is binomial
+  double1: 1.0
+
+# MODULES
+# Guidance
+guidance:
+  constraints:
+    enable: true
+    add_original_problem: false
+  warmstart:
+    enable: true
+    visualize: false
+  legacy_icra_mode: false
+  use_as_reference: true
+  visualization:
+    highlight_selected: true
+    only_trajectory_nr: -1 # -1 = all, > 0 particular trajectory (for paper figures)
+
+scenarios:
+  debug_output: false
+  use_trajectory_sampling: true # Trajectory or marginal
+  multithread: false
+  manual_noise: 0.3
+  trajectory:
+    n_bar: 4 # 4 # repurposed! cVaR threshold for maximum support selection
+    terminate_equality_tolerance: 0.001
+    use_real_samples: false       # Use a database instead of model
+    use_json_trajectory: true
+    enable_projection: true       # Project to a feasible trajectory (High support!)
+    enable_scenario_removal: false # Remove scenarios online
+    use_1D_projection: true # To be removed later
+    sqp_iterations: 15
+    save_all_support: true
+    enable_termination: true
+  safe_sampling:
+    compute_automatically: false
+    risk: 0.05 #0.25 #0.0003125 # Used if automatic
+    confidence: 0.01 # =1e-6
+    removal_count: 0
+    sample_size: 500 # Used if not automatic # 3sigma: 53050  # 1 sigma 820
+  marginal:
+    seed: 126 #-1 is random!
+    propagate_covariance: true  # If true propagates the received Gaussian covariance over the horizon
+    checked_constraints: 250 #250 # (in paper l) Should be scaled with scenarios
+    database:
+            size: 100
+            truncated: false
+            truncated_radius: 3.5 # in terms of sigma (only used if truncated gaussian)
+            build_database: true # Set to true to force building new samples
+    received_object_sigma: 1.0
+  static_obstacles:
+    enable: true
+    n_halfspaces: 2
+  polygon:
+    range: 10.0 # maximum range of the regions
+    activation_range: 400.0   # How far away pedestrians are sampled
+  visualisation:
+      scale: 1.0
+      discs_to_draw: [1]
+      indices_to_draw: [0, 5, 10, 15, 19]
+      nr_stages_to_draw: 5 # Draw this number of stages along the horizon
+      initial_guess: false
+      all_scenarios: false # Warning: Slows down the controller
+      support_scenarios: true 
+      polygon_scenarios: true
+      removed_scenarios: false
+      ellipsoids: false
+      constraints: true

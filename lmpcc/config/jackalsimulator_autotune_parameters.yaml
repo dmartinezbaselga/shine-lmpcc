@@ -1,0 +1,17 @@
+prm:
+  # goals:
+    # longitudinal: 7 #4
+    # vertical: 5 #7
+  # max_acceleration: 3 #2.2842339279518074
+  # n_samples: 162
+  selection_weights:
+    consistency: 0.0 #0.13141391309300995
+recording:
+  enable_recording: true
+  number_of_experiments: 15
+weights:
+  acceleration: 0.17186897093939424
+  angular velocity: 0.02073802511118053
+  contour: 0.010627817449478995
+  lag: 0.09658664088513756
+  velocity: 0.9191136558770905

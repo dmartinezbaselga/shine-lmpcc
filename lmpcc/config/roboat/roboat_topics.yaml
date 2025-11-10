@@ -1,0 +1,31 @@
+# Input and output topics
+publish:
+    control_command: '/force'
+    feedback: '/lmpcc/controller_feedback'
+    reset: '/lmpcc/reset'
+    reset_environment: '/reset_roboat'
+    navigation_goal: 'notused'
+
+subscribe:
+    state: '/roboat_localization/odometry_ekf/odometry_filtered'
+    velocity: '/velocity_enu'
+    obstacles: '/ellipse_objects_feed' #lmpcc msg
+    waypoints: '/move_base/NavfnROS/plan' #nav path msg
+    steering_angle: ''
+    acceleration: ''
+    velocity_reference: '/lmpcc/vref'
+    occupancy_grid: '/roboat_cloud/obstacle/map'
+    linear_constraints: '/lmpcc/linear_constraints'
+
+visualization:
+    reference_path: '/lmpcc/reference_path'
+    reference_arrows: '/lmpcc/reference_arrows'
+    spline_index: '/lmpcc/spline_index'
+    planned_collision_space: '/lmpcc/collision_space'
+    planned_trajectory: '/lmpcc/planned_trajectory'
+    free_space: '/lmpcc/free_space'
+    linear_constraints_vis: '/lmpcc/linearconstraints_viz'
+    repulsive_ellipsoids: '/lmpcc/repulsive_ellipsoids'
+    repulsive_regulations: '/lmpcc/repulsive_regulations'
+    repulsive_rightofway: '/lmpcc/repulsive_rightofway'
+    obstacles_received: '/obstacles_lmpcc'

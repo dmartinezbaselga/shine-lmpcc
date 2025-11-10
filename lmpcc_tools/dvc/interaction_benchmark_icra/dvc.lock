@@ -1,0 +1,83 @@
+schema: '2.0'
+stages:
+  run@medium:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/interaction_benchmark_icra/main.py
+      parameters True
+    - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true
+      pedestrian_scenario:="random_social/8_corridor.xml" project_name:="../../../../../../../Documents/publications/multi-mpc-2023/results/data"
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/interaction_benchmark_icra/main.py
+      restore
+    deps:
+    - path: lmpcc_tools/scripts/experiments/interaction_benchmark_icra/set_parameters.py
+      md5: d0fd247cc47b8483a7882e653825c795
+      size: 1519
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/interactive_random_social-8_corridor_Guidance-MPCCNO.txt
+      md5: 3c241f4ca577e4c454544135309c3948
+      size: 134366092
+  evaluate@medium:
+    cmd: source ~/.zshrc && cd src/lmpcc/lmpcc_tools/scripts && python3 metrics.py
+      interactive_random_social-8_corridor Guidance-MPCCNO && cd ../../../..
+    deps:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/interactive_random_social-8_corridor_Guidance-MPCCNO.txt
+      md5: 3c241f4ca577e4c454544135309c3948
+      size: 134366092
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/interactive_random_social-8_corridor/Guidance-MPCCNO.json
+      md5: 119e716e40747781987e0136c4c53d01
+      size: 4335
+  run@unstructured:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/interaction_benchmark_icra/main.py
+      parameters True
+    - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true
+      pedestrian_scenario:="random_social/12_corridor.xml" project_name:="../../../../../../../Documents/publications/multi-mpc-2023/results/data"
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/interaction_benchmark_icra/main.py
+      restore
+    deps:
+    - path: lmpcc_tools/scripts/experiments/interaction_benchmark_icra/set_parameters.py
+      md5: d0fd247cc47b8483a7882e653825c795
+      size: 1519
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/interactive_random_social-12_corridor_Guidance-MPCCNO.txt
+      md5: bdeffe29851a16440e5cbdc8ff4de0ff
+      size: 151328571
+  evaluate@unstructured:
+    cmd: source ~/.zshrc && cd src/lmpcc/lmpcc_tools/scripts && python3 metrics.py
+      interactive_random_social-12_corridor Guidance-MPCCNO && cd ../../../..
+    deps:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/interactive_random_social-12_corridor_Guidance-MPCCNO.txt
+      md5: bdeffe29851a16440e5cbdc8ff4de0ff
+      size: 151328571
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/interactive_random_social-12_corridor/Guidance-MPCCNO.json
+      md5: a7b6140257ed53a744dab4de93a7d661
+      size: 4334
+  run@low:
+    cmd:
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/interaction_benchmark_icra/main.py
+      parameters True
+    - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true
+      pedestrian_scenario:="random_social/4_corridor.xml" project_name:="../../../../../../../Documents/publications/multi-mpc-2023/results/data"
+    - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/interaction_benchmark_icra/main.py
+      restore
+    deps:
+    - path: lmpcc_tools/scripts/experiments/interaction_benchmark_icra/set_parameters.py
+      md5: d0fd247cc47b8483a7882e653825c795
+      size: 1519
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/interactive_random_social-4_corridor_Guidance-MPCCNO.txt
+      md5: d57ed23b476606751bc1fd5ba329ffbe
+      size: 119247873
+  evaluate@low:
+    cmd: source ~/.zshrc && cd src/lmpcc/lmpcc_tools/scripts && python3 metrics.py
+      interactive_random_social-4_corridor Guidance-MPCCNO && cd ../../../..
+    deps:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/data/interactive_random_social-4_corridor_Guidance-MPCCNO.txt
+      md5: d57ed23b476606751bc1fd5ba329ffbe
+      size: 119247873
+    outs:
+    - path: lmpcc_tools/scripts/data/../../../../../../../Documents/publications/multi-mpc-2023/results/metrics/interactive_random_social-4_corridor/Guidance-MPCCNO.json
+      md5: 6d0b67d1f14c76379f5bea0082f84b90
+      size: 4318

@@ -1,0 +1,58 @@
+update_frequency: 10.0 #20
+publish_frequency: 10.0 #10
+width: 6.0 #12
+height: 6.0
+resolution: 0.1 #0.1
+static_map: false # true
+rolling_window: true
+always_send_full_costmap: false
+
+map_type: costmap
+origin_z: 0.0
+z_resolution: 1
+z_voxels: 1
+
+obstacle_range: 5 #10
+raytrace_range: 2.0 #5
+
+publish_voxel_map: false
+transform_tolerance: 0.5
+meter_scoring: true
+
+# footprint: [[-0.21, -0.165], [-0.21, 0.165], [0.21, 0.165], [0.21, -0.165]]
+footprint: [[-2.0, -1.125], [4.340, -1.125], [4.340, 1.125], [-2.0, 1.125]] # Width / height - 0.8 height +1
+footprint_padding: 0.1 #0.1
+
+#static_layer:
+#  map_topic: "static_map"
+#  first_map_only: true
+  #track_unknown_space: false
+
+
+inflation_layer:
+  inflation_radius: 2.5
+
+# obstacles_layer:
+#   observation_sources: laser
+#   # velodyne:
+#   #   topic: point_cloud
+#   #   data_type: PointCloud2
+#   #   min_obstacle_height: 0.5
+  # laser:
+  #   topic: prius/center_laser/scan
+  #   data_type: PointCloud
+  #   min_obstacle_height: 0.4
+  #   clearing: true # Also remove parts that aren't obstacles anymore!
+  #   sensor_frame: center_laser_link
+
+# inflation_layer:
+#   inflation_radius: 2.0
+
+
+plugins:
+  #- {name: obstacles_layer, type: "costmap_2d::ObstacleLayer"}
+  - {name: static_layer, type: "costmap_2d::StaticLayer"}
+  - {name: inflation_layer, type: "costmap_2d::InflationLayer"}
+
+#- {name: inflater_layer, type: "costmap_2d::InflationLayer"}
+

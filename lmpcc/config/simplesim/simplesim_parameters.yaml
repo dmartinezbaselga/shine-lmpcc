@@ -1,0 +1,133 @@
+debug_output: false # Prints lots of information (use when debugging!)
+debug_solver: false # Prints lots of solver information (use when debugging only!)
+debug_velocity: 0.0      # Adds to the velocity estimation for debugging
+debug_colors: false
+debug_print_plan: false
+
+solver_timeout: 90 # (ms), use 0 for disabled
+
+# Simulation mode
+simulation_mode: true
+enable_external_weights: false
+shift_plan_forward: false
+
+reference_velocity: 3.0
+weights:
+  acceleration: 0.2
+  angular_velocity: 0.5
+  contour: 0.03
+  lag: 0.2
+  velocity: 0.05
+  preview: 0.1
+
+
+# Main Settings #
+sync_mode: true
+clock_frequency: 10 # in Hz
+
+# When true starts planning immediately
+auto_enable_plan: true
+synchronized_actuation: false # Should the controller only actuate after a full control cycle?
+
+# Physical Parameters
+enable_output: true   # Enables physical output (cannot be changed when running)
+use_follower: false   # Whether a seperate follower will run below MPCC planner
+deceleration_at_infeasible: 0.0
+
+# Recording
+recording:   
+      enable_recording: false
+      number_of_experiments: 100 #15
+      per_time: 
+        enable: false            # Time is default enabled over experiment
+        every_x_iterations: 200  # Save every this number of iterations
+      per_experiment:
+        enable: true
+        every_x_experiments: -1  # Set to -1 to use the number of experiments
+      experiment: 'prius' # Creates a folder with this name
+      add_timestamp: false           # Add timestamps to the file name
+      time_out: 40  
+
+# Kinematic chain parameter
+robot_base_link: base_link
+target_frame: map
+
+path:
+  enable_clothoid_interpolation: false
+  halfspaces_from_spline: true
+
+#https://www.wegenwiki.nl/Rijstrook (2.75m width)
+road:
+  two_way: true
+  width_right: 2. # Todo: adapt to real-world
+  width_left: 2.
+
+# Parameters for collision constraints
+obstacles:
+  max_obstacles: 8 #16 # Also change in prius_settings.py
+  radius: 1.5
+
+robot:
+  length: 4.540
+  width: 2.250
+  com_to_back: 2.4 # Distance from Center-of-mass to back of the vehicle
+
+# MODULES
+# Guidance
+guidance:
+  constraints:
+    add_original_problem: true
+  enable: true
+  use_as_reference: true
+
+scenarios:
+  debug_output: false
+  use_trajectory_sampling: true # Trajectory or marginal
+  manual_noise: 0.3
+  scale_reference_velocity: false
+  multithread: true
+  trajectory:
+    n_bar: 8
+    save_all_support: true
+    enable_termination: true
+    use_real_samples: false       # Use a database instead of model
+    enable_projection: true       # Project to a feasible trajectory
+    enable_scenario_removal: true # Remove scenarios online
+    use_1D_projection: true # To be removed later
+    sqp_iterations: 6
+    terminate_equality_tolerance: 0.001
+  marginal:
+    seed: 125 #-1 is random!
+    checked_constraints: 250 # (in paper l) Should be scaled with scenarios
+    propagate_covariance: true # (in paper l) Should be scaled with scenarios
+    database:
+            size: 1000
+            truncated: false
+            truncated_radius: 3.5 # in terms of sigma (only used if truncated gaussian)
+            build_database: true # Set to true to force building new samples
+    received_object_sigma: 3.0
+  static_obstacles:
+    enable: false
+    n_halfspaces: 2
+  polygon:
+    range: 10.0 # maximum range of the regions
+    activation_range: 400.0   # How far away pedestrians are sampled
+  safe_sampling:
+    compute_automatically: true
+    risk: 0.05        # CP
+    confidence: 0.01 # Beta
+    removal_count: 2  # Removed scenarios
+    sample_size: 1000 # Used if not automatic
+  visualisation:
+      scale: 3.0
+      # discs_to_draw: [1]
+      discs_to_draw: [0, 0, 1]
+      nr_stages_to_draw: 5 # Draw this number of stages along the horizon
+      # indices_to_draw: [0, 9, 19, 29]
+      initial_guess: false
+      all_scenarios: false
+      support_scenarios: true 
+      polygon_scenarios: true
+      removed_scenarios: false
+      ellipsoids: false
+      constraints: true

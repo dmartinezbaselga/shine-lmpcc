@@ -1,0 +1,4 @@
+std_msgs/Float64MultiArray x_init
+std_msgs/Float64MultiArray inputs 
+---
+std_msgs/Float64MultiArray outputs

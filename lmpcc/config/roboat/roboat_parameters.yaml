@@ -1,0 +1,94 @@
+# Simulation mode
+simulation_mode: false             # Is set in launch file!
+gazebo_simulation: true
+sync_mode: true
+
+auto_enable_plan: false
+
+# ==== Carla ==== #
+direct_control: false
+
+# Debug mode
+activate_output: true
+debug_info_lmpcc: false
+debug_solver: false # Prints lots of solver information (use when debugging only!)
+activate_controller_node_output: true
+plotting_result: true
+
+# Clock frequency //hz
+clock_frequency: 10
+
+# Optimal control problem dimensions
+state_dim: 7
+control_dim: 5
+
+# Parameters for collision constraints
+obstacles:
+  max_obstacles: 6
+  radius: 1
+
+robot:
+  n_discs: 3
+  length: 5.5 # 1.1 for quarter scale, 5.5 for fullscale
+  width: 3.0 # 0.55 for quarter scale, 3.0 for fullscale
+  com_to_back: 2.75 # 0.5*length
+
+delays:
+  input_delay: 0  # In timesteps (0.1s)
+      
+# Kinematic chain parameter
+robot_base_link: base_link
+target_frame: map # world fixed frame but will be changed according to robot_state_topic
+
+# Weight on the slack variable for collision collision
+slack_weight: 10000
+repulsive_weight: 0.1
+reference_velocity: 5.0
+min_velocity: 1.0
+initial_speed: 0.0
+
+#Road parameters
+road_width_right: 2.3
+road_width_left: 3.7
+      
+scenarios:
+  use_trajectory_sampling: false # Trajectory or marginal
+  multithread: false
+  trajectory:
+    use_real_samples: false       # Use a database instead of model
+    enable_projection: true       # Project to a feasible trajectory
+    enable_scenario_removal: true # Remove scenarios online
+    sqp_iterations: 4
+  marginal:
+    seed: 125 #-1 is random!
+    checked_constraints: 250 # (in paper l) Should be scaled with scenarios
+    database:
+      size: 1
+      truncated: false
+      truncated_radius: 3.5 # in terms of sigma (only used if truncated gaussian)
+      build_database: true # Set to true to force building new samples
+    received_object_sigma: 3.0
+  static_obstacles:
+    enable: false
+    n_halfspaces: 2
+  polygon:
+    range: 5.0 # maximum range of the regions
+    activation_range: 400.0   # How far away pedestrians are sampled
+  safe_sampling:
+    compute_automatically: false
+    risk: 0.05 # Used if automatic
+    confidence: 0.000001 # =1e-6
+    removal_count: 0 # 3sigma: 50  # 1 sigma 200
+    sample_size: 1000 # Used if not automatic # 3sigma: 53050  # 1 sigma 820
+  visualisation:
+    discs_to_draw: [0, 0, 1]
+    indices_to_draw: [0, 5, 9, 15, 19]
+    all_scenarios: false # Scenarios may remain for a while if the current batch is small
+    selected_scenarios: true # Is not accurate -> needs more info from polygon constructor
+    removed_scenarios: false
+    ellipsoids: true
+    constraints: true
+
+vru:
+      radius: 1.2 #0.75
+      eps_t: 0.9

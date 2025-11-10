@@ -1,0 +1,35 @@
+prm:
+  debug_output: false
+  T: 4.0
+  N: 40 # use 40 for image (for clarity)
+  obstacle_radius_extension: 0.1
+  n_samples: 1000
+  path_after_samples: 999
+  timeout: 5 #15 # ms
+  n_paths: 4 # 2
+  min_path_improvement: 0.001
+  view_angle_times_pi: 0.5
+  max_velocity: 6.0 # This is before smoohting (so can be a bit lenient)
+  max_acceleration: 3.0
+  weights:
+      geometric: 5.0
+      smoothness: 10.0
+      collision: 0.5 #0.5
+      velocity_tracking: 0.1 #1.0
+      repeat_times: 1
+  selection_weights:
+      length: 1.0
+      velocity: 100. #0.0
+      longitudinal_acceleration: 100. #0.0
+      lateral_acceleration: 0.0
+      consistency: 25. #15. #25.0 #2.0
+  spline:
+    num_points: 5
+  visuals:
+    visualize_all_samples: false
+    color_splines_by_cost: false
+  enable:
+    dynamically_propagate_nodes: true
+    multithread: false
+    project_from_obstacles: false #true
+    smoothen_velocity: false

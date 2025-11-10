@@ -1,0 +1,107 @@
+# Run GMPCC for various number of paths (with and without the original lmpcc planner) and plot task duration and infeasibility statistics
+vars:
+  - method:
+      name: GMPCC
+      project: guidance-journal-2023
+      project_folder: "../../../../../../../Documents/publications/multi-mpc-2023/results"
+
+stages:
+  sample_comparison_run:
+    foreach:
+      samples-6:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_samples: 50
+      samples-5:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_samples: 100
+      samples-4:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_samples: 200
+      samples-3:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_samples: 40
+      samples-2:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_samples: 30
+      samples-1:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_samples: 20      
+      samples-0:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_samples: 10
+    do:
+      wdir: ../../..
+      deps:
+        - lmpcc_tools/scripts/experiments/compare_samples/set_parameters.py
+      cmd:
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/compare_samples/main.py parameters ${item.num_samples} False # Load the parameters
+        - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true pedestrian_scenario:="${item.file}" project_name:="${method.project_folder}/data"
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/compare_samples/main.py restore # Restore the parameters
+      outs:
+        - lmpcc_tools/scripts/data/${method.project_folder}/data/${item.num_samples}samples-${item.name}_${method.name}.txt 
+
+  sample_comparison_metrics:
+    foreach:
+      samples-6:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_samples: 50
+      samples-5:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_samples: 100
+      samples-4:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_samples: 200
+      samples-3:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_samples: 40
+      samples-2:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_samples: 30
+      samples-1:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_samples: 20      
+      samples-0:
+        file: random_fast/16_straight.xml # Busy scenario
+        name: random_fast-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+        num_samples: 10
+    do:
+      wdir: ../../..
+      deps:
+        - lmpcc_tools/scripts/data/${method.project_folder}/data/${item.num_samples}samples-${item.name}_${method.name}.txt 
+      cmd:
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 metrics.py ${item.num_samples}samples-${item.name} ${method.name}
+      outs:
+        - lmpcc_tools/scripts/data/${method.project_folder}/metrics/${item.num_samples}samples-${item.name}/${method.name}.json 
+
+  create_plots:
+    wdir: ../../..
+    deps:       
+      - lmpcc_tools/scripts/data/${method.project_folder}/metrics/50samples-random_fast-16_straight/GMPCC.json 
+      - lmpcc_tools/scripts/data/${method.project_folder}/metrics/100samples-random_fast-16_straight/GMPCC.json 
+      - lmpcc_tools/scripts/data/${method.project_folder}/metrics/200samples-random_fast-16_straight/GMPCC.json 
+      - lmpcc_tools/scripts/data/${method.project_folder}/metrics/40samples-random_fast-16_straight/GMPCC.json 
+      - lmpcc_tools/scripts/data/${method.project_folder}/metrics/30samples-random_fast-16_straight/GMPCC.json 
+      - lmpcc_tools/scripts/data/${method.project_folder}/metrics/20samples-random_fast-16_straight/GMPCC.json 
+      - lmpcc_tools/scripts/data/${method.project_folder}/metrics/10samples-random_fast-16_straight/GMPCC.json 
+      - lmpcc_tools/scripts/experiments/compare_samples/main.py
+
+    cmd:
+      - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/compare_samples/main.py process False 6
+    outs:
+      - lmpcc_tools/scripts/data/${method.project_folder}/figures/sample_comparison/task_duration.pdf
+      - lmpcc_tools/scripts/data/${method.project_folder}/figures/sample_comparison/infeasible.pdf
+      - lmpcc_tools/scripts/data/${method.project_folder}/figures/sample_comparison/runtime.pdf
+      - lmpcc_tools/scripts/data/${method.project_folder}/figures/sample_comparison/guidance_runtime.pdf

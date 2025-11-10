@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+
+<launch>
+    <!-- SimpleSim arguments -->
+    <arg name="model" default="kinematic_bicycle"/>
+    <arg name="tire_model" default="no"/>
+    <arg name="control_input_symbols" default="jx_domega"/>
+    <arg name="external_controller" default="true"/>
+    <arg name="ctrl_dt" default="0.01"/>
+    <arg name="model_dt" default="0.01"/>
+    <arg name="model_rate" default="100"/>
+    <arg name="real_time_factor" default="1"/>
+
+    <!-- Roadmap Arguments -->
+    <arg name="map" default="" />
+    <arg name="overwrite_map" default="false" />
+
+    <!-- Follower arguments -->
+    <arg name="architecture" default="mpc-pid"/>
+
+    <!-- Load PID gains -->
+    <param name="Kp_throttle" value="25." />
+    <param name="Kp_steer" value="25." />
+
+    <!-- Pedestrian Arguments -->
+    <arg name="pedestrian_scenario" default="" />
+    <arg name="overwrite_pedestrian_scenario" default="true" />
+
+    <!-- Debug Info -->
+    <arg name="debug" default="false" />
+    <arg unless="$(arg debug)" name="launch_prefix" value="" />
+    <arg     if="$(arg debug)" name="launch_prefix" value="gdb --ex run --args" />
+
+    <!-- # load Cartesian controller config -->
+    <rosparam command="load" file="$(find lmpcc)/config/simplesim/simplesim_parameters.yaml"/>
+    <rosparam command="load" file="$(find lmpcc)/config/simplesim/simplesim_topics.yaml"/>
+    <rosparam command="load" file="$(find lmpcc)/config/simplesim/path.yaml"/>
+
+    <arg name="enable_recording" default="false"/>
+    <param name="recording/enable_recording" value = "$(arg enable_recording)"/>
+    <param name="recording/experiment" value="$(arg map)" if="$(arg overwrite_map)"/>
+
+    <node pkg="lmpcc" type="lmpcc_node" name="lmpcc_node" cwd="node" required="true" respawn="false" output="screen">
+        <remap from="/ukf_localization_map/odometry/filtered" to="/$(arg model)/state"/>
+        <remap from="/bicycle/reset_sim" to="/$(arg model)/reset_sim"/>
+    </node>
+
+    <include file="$(find simple_sim)/launch/simple_sim.launch">
+        <arg name="model" value="$(arg model)"/>
+        <arg name="tire_model" value="$(arg tire_model)"/>
+        <arg name="control_input_symbols" value="$(arg control_input_symbols)"/>
+        <arg name="external_controller" value="$(arg external_controller)"/>
+        <arg name="ctrl_dt" value="$(arg ctrl_dt)"/>
+        <arg name="model_dt" value="$(arg model_dt)"/>
+        <arg name="model_rate" value="$(arg model_rate)"/>
+        <arg name="real_time_factor" value="$(arg real_time_factor)"/>
+        
+    </include>
+
+        <include file="$(find roadmap)/launch/roadmap.launch">
+        <arg name="map" value="$(arg map)"/>
+        <arg name="overwrite_map" value="$(arg overwrite_map)"/>
+    </include>
+    
+
+    <node pkg="follower" type="follower_node" name="follower_node" cwd="node" output="screen" required="True"
+          args="--architecture $(arg architecture) -m $(arg model) --control_input_symbols $(arg control_input_symbols) --ctrl_dt $(arg ctrl_dt)"/>
+
+
+    <node pkg="topic_tools" type="transform" name="transform_speed" args=" /$(arg model)/state /value/speed std_msgs/Float32 'std_msgs.msg.Float32(data = m.twist.twist.linear.x)' --import std_msgs" respawn="True"/>
+    <node pkg="topic_tools" type="transform" name="transform_steering_angle" args=" /movebox/front_left_steer_joint /value/steering_angle std_msgs/Float32 'std_msgs.msg.Float32(data = m.position[0])' --import std_msgs" respawn="True"/>
+
+    <include file="$(find pedestrian_simulator)/launch/simulation.launch">
+        <arg name="pedestrian_scenario" value="$(arg pedestrian_scenario)"/>
+        <arg name="overwrite_pedestrian_scenario" value="$(arg overwrite_pedestrian_scenario)"/>
+    </include>
+
+
+    <!-- <node pkg="rqt_plot" type="rqt_plot" name="rqt_plot_pid_ax" args=" /value/ax, /control/ax"/>
+    <node pkg="rqt_plot" type="rqt_plot" name="rqt_plot_pid_omega" args=" /value/omega, /control/omega"/> -->
+
+    <node pkg="rqt_reconfigure" type="rqt_reconfigure" name="rqt_reconfigure" cwd="node" respawn="false" output="screen">
+        <remap from="/bicycle/reset_sim" to="/$(arg model)/reset_sim"/>
+    </node>
+
+
+</launch>  

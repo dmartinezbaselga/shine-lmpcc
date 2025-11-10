@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<launch>
+    <!-- Debug Info -->
+    <arg name="debug" default="false" />
+    <arg unless="$(arg debug)" name="launch_prefix" value="" />
+    <arg if="$(arg debug)" name="launch_prefix" value="gdb --ex run --args" />
+    <arg name="gui" default="false" />
+
+    <!-- Roboat simulation -->
+    <include file="$(find roboat_social_simulator)/launch/social_simulator.launch" />
+
+    <!-- Load configs -->
+    <rosparam command="load" file="$(find lmpcc)/config/roboat/roboat_parameters.yaml"/>
+    <rosparam command="load" file="$(find lmpcc)/config/roboat/roboat_topics.yaml"/>
+    <rosparam command="load" file="$(find lmpcc)/config/path.yaml"/> 
+
+    <!-- Start LMPCC node -->
+    <node pkg="lmpcc" type="lmpcc_node" name="lmpcc_node" cwd="node" respawn="false" output="screen">
+        <rosparam file="$(find lmpcc)/config/costmap_static_params.yaml" command="load" ns="costmap" />
+    </node>
+
+    <include file="$(find linear_constraint_generation)/launch/static_obstacles.launch"> </include>
+	
+</launch>  

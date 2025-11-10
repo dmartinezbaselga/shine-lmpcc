@@ -1,0 +1,32 @@
+# Input and output topics
+publish:
+    control_command: 'mavros/setpoint_raw/roll_pitch_yawrate_thrust'
+    reset: ''
+    reset_environment: ''
+
+subscribe:
+    state: 'mavros/local_position/odom'
+    velocity: ''
+    obstacles: ''
+    obstacle_predictions: ''
+    waypoints: ''
+    steering_angle: ''
+    acceleration: ''
+    velocity_reference: '/lmpcc/vref'
+    occupancy_grid: ''
+    linear_constraints: ''
+
+visualization:
+    reference_path: 'lmpcc/reference_path'
+    reference_arrows: 'lmpcc/reference_arrows'
+    spline_index: 'lmpcc/spline_index'
+    current_collision_space: 'lmpcc/current_collision_space'
+    planned_collision_space: 'lmpcc/collision_space'
+    planned_trajectory: 'lmpcc/planned_trajectory'
+    free_space: 'lmpcc/free_space'
+    linear_constraints_vis: 'lmpcc/linearconstraints_viz'
+    repulsive_ellipsoids: 'lmpcc/repulsive_ellipsoids'
+    repulsive_regulations: 'lmpcc/repulsive_regulations'
+    repulsive_rightofway: 'lmpcc/repulsive_rightofway'
+    obstacles_received: 'obstacles_lmpcc'
+    obstacles_predicted: 'predicted_obstacles_lmpcc'

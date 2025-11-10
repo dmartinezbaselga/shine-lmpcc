@@ -1,0 +1,164 @@
+vars:
+  - method:
+      name: GMPCC
+      project: guidance-journal-2023
+      project_folder: "../../../../../../../Documents/publications/multi-mpc-2023/results"
+
+stages:
+  run:
+    foreach:
+      unstructured:
+        file: random_social/16_straight.xml
+        name: random_social-16_straight
+      unstructured-medium:
+        file: random_social/12_straight.xml
+        name: random_social-12_straight
+      # unstructured-easy:
+      #   file: random_fast/8_straight.xml
+      #   name: random_fast-8_straight
+      # unstructured-super-easy:
+      #   file: random_fast/4_straight.xml
+      #   name: random_fast-4_straight
+
+    do:
+      wdir: ../../..
+      cmd:
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/social_planning_benchmark/main.py parameters True # Load the parameters
+        - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true pedestrian_scenario:="${item.file}" project_name:="${method.project_folder}/data"
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/social_planning_benchmark/main.py restore # Load the parameters      
+      deps:
+        - lmpcc/include/generated/Configuration${method.name}
+        - lmpcc_tools/scripts/experiments/social_planning_benchmark/set_parameters.py
+      params:
+        - lmpcc/config/path.yaml:
+            - global_path.x
+        - ../pedestrian_simulator/config/configuration.yaml:
+            - pedestrian_simulator.pedestrians.seed
+      outs:
+        - lmpcc_tools/scripts/data/${method.project_folder}/data/${item.name}_${method.name}.txt 
+  
+  evaluate:
+    foreach:
+      unstructured:
+        file: random_social/16_straight.xml
+        name: random_social-16_straight
+      unstructured-medium:
+        file: random_social/12_straight.xml
+        name: random_social-12_straight
+    do:
+      wdir: ../../..
+      cmd: source ~/.zshrc && cd src/lmpcc/lmpcc_tools/scripts && python3 metrics.py ${item.name} ${method.name} && cd ../../../..
+      deps:
+        - lmpcc_tools/scripts/data/${method.project_folder}/data/${item.name}_${method.name}.txt 
+      metrics:
+        - lmpcc_tools/scripts/data/${method.project_folder}/metrics/${item.name}/${method.name}.json 
+
+  run-no-original:
+    foreach:
+#      unstructured:
+#        file: random_social/16_straight.xml
+#        name: random_social-16_straight
+      unstructured-medium:
+        file: random_social/12_straight.xml
+        name: random_social-12_straight
+
+    do:
+      wdir: ../../..
+      cmd:
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/social_planning_benchmark/main.py parameters False # Load the parameters
+        - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true pedestrian_scenario:="${item.file}" project_name:="${method.project_folder}/data"
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/social_planning_benchmark/main.py restore # Load the parameters      
+      deps:
+        - lmpcc/include/generated/Configuration${method.name}
+        - lmpcc_tools/scripts/experiments/social_planning_benchmark/set_parameters.py
+      params:
+        - lmpcc/config/path.yaml:
+            - global_path.x
+        - ../pedestrian_simulator/config/configuration.yaml:
+            - pedestrian_simulator.pedestrians.seed
+      outs:
+        - lmpcc_tools/scripts/data/${method.project_folder}/data/${item.name}_${method.name}NO.txt 
+  
+  evaluate-no-original:
+    foreach:
+#      unstructured:
+#        file: random_social/16_straight.xml
+#        name: random_social-16_straight
+      unstructured-medium:
+        file: random_social/12_straight.xml
+        name: random_social-12_straight
+    do:
+      wdir: ../../..
+      cmd: source ~/.zshrc && cd src/lmpcc/lmpcc_tools/scripts && python3 metrics.py ${item.name} ${method.name}NO && cd ../../../..
+      deps:
+        - lmpcc_tools/scripts/data/${method.project_folder}/data/${item.name}_${method.name}NO.txt 
+      metrics:
+        - lmpcc_tools/scripts/data/${method.project_folder}/metrics/${item.name}/${method.name}NO.json 
+
+  # LMPCC (0 PATHS)
+  run-lmpcc:
+    foreach:
+      unstructured:
+        file: random_social/16_straight.xml
+        name: random_social-16_straight
+      unstructured-medium:
+        file: random_social/12_straight.xml
+        name: random_social-12_straight
+
+    do:
+      wdir: ../../..
+      cmd:
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/social_planning_benchmark/main.py parameters True 0 # Load the parameters
+        - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true pedestrian_scenario:="${item.file}" project_name:="${method.project_folder}/data"
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/social_planning_benchmark/main.py restore # Load the parameters      
+      deps:
+        - lmpcc/include/generated/Configuration${method.name}
+        - lmpcc_tools/scripts/experiments/social_planning_benchmark/set_parameters.py
+      params:
+        - lmpcc/config/path.yaml:
+            - global_path.x
+        - ../pedestrian_simulator/config/configuration.yaml:
+            - pedestrian_simulator.pedestrians.seed
+      outs:
+        - lmpcc_tools/scripts/data/${method.project_folder}/data/${item.name}_LMPCC.txt 
+
+  evaluate-lmpcc:
+    foreach:
+      unstructured:
+        file: random_social/16_straight.xml
+        name: random_social-16_straight
+      unstructured-medium:
+        file: random_social/12_straight.xml
+        name: random_social-12_straight
+    do:
+      wdir: ../../..
+      cmd: source ~/.zshrc && cd src/lmpcc/lmpcc_tools/scripts && python3 metrics.py ${item.name} LMPCC && cd ../../../..
+      deps:
+        - lmpcc_tools/scripts/data/${method.project_folder}/data/${item.name}_LMPCC.txt 
+      metrics:
+        - lmpcc_tools/scripts/data/${method.project_folder}/metrics/${item.name}/LMPCC.json 
+
+  # compare:
+  #   foreach:
+  #     unstructured:
+  #       file: random_fast/16_straight.xml
+  #       name: random_fast-16_straight
+  #     unstructured-medium:
+  #       file: random_fast/12_straight.xml
+  #       name: random_fast-12_straight
+  #     unstructured-easy:
+  #       file: random_fast/8_straight.xml
+  #       name: random_fast-8_straight
+  #     unstructured-super-easy:
+  #       file: random_fast/4_straight.xml
+  #       name: random_fast-4_straight
+  #   do:
+  #     wdir: ../../..
+  #     cmd: source ~/.zshrc && cd src/lmpcc/lmpcc_tools/scripts && python3 compare.py ${item.name}
+  #     deps:
+  #       - lmpcc_tools/scripts/compare.py
+  #       - lmpcc_tools/scripts/data/${method.project_folder}/metrics/${item.name}/${method.name}.json 
+  #       - lmpcc_tools/scripts/data/${method.project_folder}/metrics/${item.name}/${method.name}NO.json 
+  #       - lmpcc_tools/scripts/metrics/${method.project}/${item.name}/LMPCC.json
+  #     outs:
+  #       - lmpcc_tools/scripts/data/${method.project_folder}/../latex/tables/${item.name}.tex

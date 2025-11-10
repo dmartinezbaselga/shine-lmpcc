@@ -1,0 +1,30 @@
+prm:
+  debug_output: false
+  seed: 1 # -1 for random!
+  # T: 12.0 # Longer horizon
+  # N: 60
+  T: 8.0 # KHALED - FRENET COMPARISON
+  N: 40 
+  # T: 4.0 # Normal settings
+  # N: 80
+  # rules: pass_left # Options: 'pass_left' 'none'
+  # topology_comparison: Homology # Homology (default) or UVD
+  topology_comparison: Homology # Homology (default) or UVD
+  n_samples: 200
+  timeout: 15 # ms
+  n_paths: 4 # current max: 7
+  view_angle_times_pi: 0.606 # Autotuned (not important)
+  max_velocity: 3.0
+  max_acceleration: 3.0
+  goals:
+    longitudinal: 6
+    vertical: 3
+  visuals:
+    visualize_all_samples: false
+    color_splines_by_cost: false
+  enable:
+    dynamically_propagate_nodes: true
+    project_from_obstacles: false
+    smoothen_velocity: false
+  test_node:
+    continuous_replanning_: false

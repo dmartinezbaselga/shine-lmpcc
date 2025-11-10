@@ -1,0 +1,338 @@
+vars:
+  - method: 
+      # configuration: Homotopy-Constrained
+      # name: GMPCC #constraint-guidance-mpcc
+      # configuration: Baseline-LinEllipsoid
+      # name: ellipsoid
+      # configuration: Homotopy
+      # name: objective-guidance-mpcc
+      configuration: Prius
+      # name: simple_sim-lmpcc
+      name: ellipsoid
+      tire_model: dugoff
+
+stages:
+
+  # # Begin of lmpcc dvc
+  # generate_solver: # Todo create a for each to do comparison
+  #   cmd:
+  #     - cd lmpcc && bash 01_set_system.sh SimpleSim
+  #     - cd lmpcc && bash 02_generate_solver.sh 1 ${method.configuration}
+  #   deps:
+  #     - lmpcc/python_forces_code/prius/prius_solver.py
+  #     - lmpcc/python_forces_code/prius/prius_settings.py
+  #     - lmpcc/python_forces_code/objective.py
+  #     - lmpcc/python_forces_code/inequality.py
+  #     - lmpcc/python_forces_code/systems.py
+  #   outs:
+  #     - lmpcc/python_forces_code/generated_cpp/PriusSolver.cpp
+  #     - lmpcc/python_forces_code/generated_cpp/PriusSolver.h
+  #     # - lmpcc/python_forces_code/generated_cpp/Configuration${method.configuration}
+
+  # build:
+  #   cmd:
+  #     - source ../../devel/setup.bash && catkin build lmpcc
+  #     - cd ..
+  #   deps:
+  #     - lmpcc/src/lmpcc_controller.cpp
+  #     - lmpcc/src/homotopy/prm.cpp
+  #     - lmpcc/python_forces_code/generated_cpp/PriusSolver.cpp
+  #     - lmpcc/python_forces_code/generated_cpp/PriusSolver.h
+  #     - lmpcc/python_forces_code/generated_cpp/Configuration${method.configuration}
+
+  #   outs:
+  #     - ../../devel/lib/lmpcc/lmpcc_node
+
+  run:
+    foreach:
+      # thirty:
+      #   name: maps-simple_circle_radius_30
+      #   file: maps/simple_circle_radius_30.xml
+      # forty:
+      #   name: maps-simple_circle_radius_40
+      #   file: maps/simple_circle_radius_40.xml
+      # fifty:
+      #   name: maps-simple_circle_radius_50
+      #   file: maps/simple_circle_radius_50.xml
+      # sixty:
+      #   name: maps-simple_circle_radius_60
+      #   file: maps/simple_circle_radius_60.xml
+      curve:
+        name: maps-simple_curve
+        file: maps/simple_curve.xml
+      # oval:
+      #   name: maps-simple_oval
+      #   file: maps/simple_oval.xml
+      # linear_30:
+      #   name: maps-simple_circle_radius_linear_30
+      #   file: maps/simple_circle_radius_30.xml
+      #   tire_model: linear
+      # # linear_40:
+      # #   name: maps-simple_circle_radius_linear_40
+      # #   file: maps/simple_circle_radius_40.xml
+      # #   tire_model: linear
+      # # linear_50:
+      # #   name: maps-simple_circle_radius_linear_50
+      # #   file: maps/simple_circle_radius_50.xml
+      # #   tire_model: linear
+      # # linear_60:
+      # #   name: maps-simple_circle_radius_linear_60
+      # #   file: maps/simple_circle_radius_60.xml
+      # #   tire_model: linear
+      # dugoff_30:
+      #   name: maps-simple_circle_radius_dugoff_30
+      #   file: maps/simple_circle_radius_30.xml
+      #   tire_model: dugoff
+      # # dugoff_40:
+      # #   name: maps-simple_circle_radius_dugoff_40
+      # #   file: maps/simple_circle_radius_40.xml
+      # #   tire_model: dugoff
+      # # dugoff_50:
+      # #   name: maps-simple_circle_radius_dugoff_50
+      # #   file: maps/simple_circle_radius_50.xml
+      # #   tire_model: dugoff
+      # # dugoff_60:
+      # #   name: maps-simple_circle_radius_dugoff_60
+      # #   file: maps/simple_circle_radius_60.xml
+      # #   tire_model: dugoff
+
+    do:
+      cmd:
+        # - source ../../devel/setup.bash && roslaunch lmpcc simplesim_follower.launch model:=dynamic_bicycle tire_model:="${method.tire_model}" overwrite_map:=true map:="${item.file}" enable_recording:=true
+        - source ../../devel/setup.bash && roslaunch lmpcc simplesim_direct_control.launch model:=dynamic_bicycle tire_model:=dugoff overwrite_map:=true map:="${item.file}" enable_recording:=true
+      deps:
+        - lmpcc/python_forces_code/generated_cpp/Configurationsimple-sim
+        - ../../devel/lib/lmpcc/lmpcc_node
+        - trigger_dvc.txt
+        # - lmpcc/src/lmpcc_controller.cpp
+      params:
+        - lmpcc/config/simplesim/simplesim_parameters.yaml:
+          - recording.number_of_experiments
+        - lmpcc/config/simplesim/path.yaml:
+          - global_path.x
+        - lmpcc/config/homotopy.yaml:
+          - prm.n_samples
+          - prm.selection_weights.consistency
+        - ../pedestrian_simulator/config/configuration.yaml:
+          - pedestrian_simulator.pedestrians.seed
+          - pedestrian_simulator.pedestrians.process_noise
+      outs:
+        - lmpcc/matlab_exports/data/${item.name}_${method.name}.txt
+
+  # evaluate:
+  #   foreach:
+  #     unstructured:
+  #       file: random/16_straight.xml # We can add each experiment like this (this is quite nice)
+  #       name: random-16_straight
+  #     corridor:
+  #       file: corridor/16_random.xml # We can add each experiment like this (this is quite nice)
+  #       name: corridor-16_random
+  #     crossing:
+  #       file: crossing/16_random-sidewalks.xml # We can add each experiment like this (this is quite nice)
+  #       name: crossing-16_random-sidewalks
+  #   do:
+  #     cmd: source ~/.zshrc && cd src/lmpcc/lmpcc/matlab_exports/code/multi-mpc && ~/programs/matlab/installation/bin/matlab -nodisplay -r "evaluate_metrics('${item.name}_${method.name}'); quit" && cd ../../../..
+  #     deps:
+  #       - lmpcc/matlab_exports/data/${item.name}_${method.name}.txt
+  #       - lmpcc/matlab_exports/code/multi-mpc/evaluate_metrics.m
+  #     metrics:
+  #       - lmpcc/matlab_exports/code/multi-mpc/Metrics/${item.name}_${method.name}.json
+  
+  evaluate:
+    foreach:
+      # thirty:
+      #   name: maps-simple_circle_radius_30
+      #   file: maps/simple_circle_radius_30.xml
+      # forty:
+      #   name: maps-simple_circle_radius_40
+      #   file: maps/simple_circle_radius_40.xml
+      # fifty:
+      #   name: maps-simple_circle_radius_50
+      #   file: maps/simple_circle_radius_50.xml
+      # sixty:
+      #   name: maps-simple_circle_radius_60
+      #   file: maps/simple_circle_radius_60.xml
+      curve:
+        name: maps-simple_curve
+        file: maps/simple_curve.xml
+      # oval:
+      #   name: maps-simple_oval
+      #   file: maps/simple_oval.xml
+      # linear_30:
+      #   name: maps-simple_circle_radius_linear_30
+      #   file: maps/simple_circle_radius_30.xml
+      #   tire_model: linear
+      # # linear_40:
+      # #   name: maps-simple_circle_radius_linear_40
+      # #   file: maps/simple_circle_radius_40.xml
+      # #   tire_model: linear
+      # # linear_50:
+      # #   name: maps-simple_circle_radius_linear_50
+      # #   file: maps/simple_circle_radius_50.xml
+      # #   tire_model: linear
+      # # linear_60:
+      # #   name: maps-simple_circle_radius_linear_60
+      # #   file: maps/simple_circle_radius_60.xml
+      # #   tire_model: linear
+      # dugoff_30:
+      #   name: maps-simple_circle_radius_dugoff_30
+      #   file: maps/simple_circle_radius_30.xml
+      #   tire_model: dugoff
+      # # dugoff_40:
+      # #   name: maps-simple_circle_radius_dugoff_40
+      # #   file: maps/simple_circle_radius_40.xml
+      # #   tire_model: dugoff
+      # # dugoff_50:
+      # #   name: maps-simple_circle_radius_dugoff_50
+      # #   file: maps/simple_circle_radius_50.xml
+      # #   tire_model: dugoff
+      # # dugoff_60:
+      # #   name: maps-simple_circle_radius_dugoff_60
+      # #   file: maps/simple_circle_radius_60.xml
+      # #   tire_model: dugoff
+    do:
+      cmd: source ~/.bashrc && cd lmpcc/matlab_exports/python && python3 metrics.py ${item.name} ${method.name} && cd ../../..
+      deps:
+        - lmpcc/matlab_exports/data/${item.name}_${method.name}.txt
+        - lmpcc/matlab_exports/python/metrics.py
+      metrics:
+        - lmpcc/matlab_exports/python/metrics/${item.name}/${method.name}.json
+
+  # plot_forces:
+  #   foreach:
+  #     thirty:
+  #       name: maps-simple_circle_radius_30
+  #       file: maps/simple_circle_radius_30.xml
+  #     forty:
+  #       name: maps-simple_circle_radius_40
+  #       file: maps/simple_circle_radius_40.xml
+  #     fifty:
+  #       name: maps-simple_circle_radius_50
+  #       file: maps/simple_circle_radius_50.xml
+  #     sixty:
+  #       name: maps-simple_circle_radius_60
+  #       file: maps/simple_circle_radius_60.xml
+  #     # linear_30:
+  #     #   name: maps-simple_circle_radius_linear_30
+  #     #   file: maps/simple_circle_radius_30.xml
+  #     #   tire_model: linear
+  #     # # linear_40:
+  #     # #   name: maps-simple_circle_radius_linear_40
+  #     # #   file: maps/simple_circle_radius_40.xml
+  #     # #   tire_model: linear
+  #     # # linear_50:
+  #     # #   name: maps-simple_circle_radius_linear_50
+  #     # #   file: maps/simple_circle_radius_50.xml
+  #     # #   tire_model: linear
+  #     # # linear_60:
+  #     # #   name: maps-simple_circle_radius_linear_60
+  #     # #   file: maps/simple_circle_radius_60.xml
+  #     # #   tire_model: linear
+  #     # dugoff_30:
+  #     #   name: maps-simple_circle_radius_dugoff_30
+  #     #   file: maps/simple_circle_radius_30.xml
+  #     #   tire_model: dugoff
+  #     # # dugoff_40:
+  #     # #   name: maps-simple_circle_radius_dugoff_40
+  #     # #   file: maps/simple_circle_radius_40.xml
+  #     # #   tire_model: dugoff
+  #     # # dugoff_50:
+  #     # #   name: maps-simple_circle_radius_dugoff_50
+  #     # #   file: maps/simple_circle_radius_50.xml
+  #     # #   tire_model: dugoff
+  #     # # dugoff_60:
+  #     # #   name: maps-simple_circle_radius_dugoff_60
+  #     # #   file: maps/simple_circle_radius_60.xml
+  #     # #   tire_model: dugoff
+  #   do:
+  #     cmd: source ~/.bashrc && cd lmpcc/matlab_exports/python && python3 visuals.py ${item.name} ${method.name} && cd ../../..
+  #     deps:
+  #       - lmpcc/matlab_exports/data/${item.name}_${method.name}.txt
+  #       - lmpcc/matlab_exports/python/visuals.py
+  #     # metrics:
+  #     #   - lmpcc/matlab_exports/python/metrics/${item.name}/${method.name}.json
+
+  # compare:
+  #   foreach:
+  #     thirty:
+  #       name: simple_circle_radius_30
+  #       file: maps/simple_circle_radius_30.xml
+  #     forty:
+  #       name: simple_circle_radius_40
+  #       file: maps/simple_circle_radius_40.xml
+  #     fifty:
+  #       name: simple_circle_radius_50
+  #       file: maps/simple_circle_radius_50.xml
+  #   do:
+  #     cmd: source ~/.bashrc && cd src/lmpcc/lmpcc/matlab_exports/python && python3 compare.py ${item.name} && cd ../../../..
+  #     deps:
+  #       - lmpcc/matlab_exports/python/compare.py
+  #       - lmpcc/matlab_exports/python/metrics/${item.name}/${method.name}.json
+  #     outs:
+  #       - ~/Documents/testdata/initial/${item.name}.tex
+  # compare:
+  #   foreach:
+  #     unstructured:
+  #       file: random/16_straight.xml # We can add each experiment like this (this is quite nice)
+  #       name: random-16_straight
+  #     corridor:
+  #       file: corridor/16_random.xml # We can add each experiment like this (this is quite nice)
+  #       name: corridor-16_random
+  #     crossing:
+  #       file: crossing/16_random-sidewalks.xml # We can add each experiment like this (this is quite nice)
+  #       name: crossing-16_random-sidewalks
+  #   do:
+  #     cmd: source ~/.zshrc && cd src/lmpcc/lmpcc/matlab_exports/code/multi-mpc && ~/programs/matlab/installation/bin/matlab -nodisplay -r "compare_metrics('${item.name}'); quit" && cd ../../../..
+  #     deps:
+  #       - lmpcc/matlab_exports/code/multi-mpc/Metrics/${item.name}_${method.name}.json
+  #       - lmpcc/matlab_exports/code/multi-mpc/compare_metrics.m
+  #     outs:
+  #       - ../../../../Documents/publications/multi-mpc-2023/latex/tables/${item.name}.tex
+
+# run_frenet_planner:
+  #   foreach:
+  #     unstructured:
+  #       file: random/16_straight.xml # We can add each experiment like this (this is quite nice)
+  #       name: random-16_straight
+  #     corridor:
+  #       file: corridor/16_random.xml # We can add each experiment like this (this is quite nice)
+  #       name: corridor-16_random
+  #     crossing:
+  #       file: crossing/16_random-sidewalks.xml # We can add each experiment like this (this is quite nice)
+  #       name: crossing-16_random-sidewalks
+
+  #   do:
+  #     cmd:
+  #       - source ../../devel/setup.zsh && roslaunch frenet_optimal_planner frenet_optimal_planner.launch overwrite_pedestrian_scenario:=true pedestrian_scenario:="${item.file}"
+  #     deps:
+  #       - ../frenet_optimal_planner/src/frenet_optimal_planner_node.cpp
+  #       - ../frenet_optimal_planner/include/frenet_optimal_planner/frenet_optimal_planner_node.h
+  #     params:
+  #       - lmpcc/config/simplesim/simplesim_parameters.yaml:
+  #         - recording.number_of_experiments
+  #       - ../frenet_optimal_planner/config/path.yaml:
+  #         - global_path.x
+  #       - ../pedestrian_simulator/config/configuration.yaml:
+  #         - pedestrian_simulator.pedestrians.seed
+  #         - pedestrian_simulator.pedestrians.process_noise
+  #     outs:
+  #       - lmpcc/matlab_exports/data/${item.name}_frenet-planner.txt
+
+  # evaluate_frenet:
+  #   foreach:
+  #     unstructured:
+  #       file: random/16_straight.xml # We can add each experiment like this (this is quite nice)
+  #       name: random-16_straight
+  #     corridor:
+  #       file: corridor/16_random.xml # We can add each experiment like this (this is quite nice)
+  #       name: corridor-16_random
+  #     crossing:
+  #       file: crossing/16_random-sidewalks.xml # We can add each experiment like this (this is quite nice)
+  #       name: crossing-16_random-sidewalks
+  #   do:
+  #     cmd: source ~/.zshrc && cd src/lmpcc/lmpcc/matlab_exports/code/multi-mpc && ~/programs/matlab/installation/bin/matlab -nodisplay -r "evaluate_metrics('${item.name}_frenet-planner'); quit" && cd ../../../..
+  #     deps:
+  #       - lmpcc/matlab_exports/data/${item.name}_frenet-planner.txt
+  #       - lmpcc/matlab_exports/code/multi-mpc/evaluate_metrics.m
+  #     metrics:
+  #       - lmpcc/matlab_exports/code/multi-mpc/Metrics/${item.name}_frenet-planner.json

@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>lmpcc</name>
+  <version>0.6.14</version>
+  <description>The Local Model Predictive Contouring Control for Dynamic Environments package</description>
+
+  <maintainer email="bruno.debrito@tudelft.nl">Bruno Brito</maintainer>
+  <maintainer email="boazfloor@gmail.com">Bruno Brito</maintainer>
+  <author>Bruno Brito</author>
+  <author>Boaz Floor</author>
+  <author>Laura Ferranti</author>
+  <author>Javier ALonso-Mora</author>
+  <license>GPUv2</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roslint</build_depend>
+
+  <!-- <build_depend>local_polygon</build_depend> -->
+  <depend>actionlib</depend>
+  <depend>actionlib_msgs</depend>
+  <exec_depend>robot_localization</exec_depend>
+  <depend>boost</depend>
+  <depend>cmake_modules</depend>
+  <depend>control_msgs</depend>
+  <depend>dynamic_reconfigure</depend>
+  <depend>eigen_conversions</depend>
+  <depend>eigen</depend>
+  <depend>geometry_msgs</depend>
+  <depend>kdl_conversions</depend>
+  <depend>kdl_parser</depend>
+  <depend>mav_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>pluginlib</depend>
+  <depend>roscpp</depend>
+  <depend>carla_ackermann_control</depend>
+  <depend>carla_msgs</depend>
+  <depend>roadmap_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>std_srvs</depend>
+  <depend>tf</depend>
+  <depend>tf_conversions</depend>
+  <depend>tf2</depend>
+  <depend>tf2_geometry_msgs</depend>
+  <depend>trajectory_msgs</depend>
+  <depend>urdf</depend>
+  <depend>visualization_msgs</depend>
+  <depend>mobile_robot_state_publisher</depend>
+  <depend>shape_msgs</depend>
+
+  <depend>lmpcc_msgs</depend>
+  <build_depend>lmpcc_tools</build_depend>
+  <depend>ros_tools</depend>
+  <build_depend>lmpcc_solver</build_depend>
+
+  <exec_depend>lmpcc_solver</exec_depend>
+  <exec_depend>carla_simulation_tools</exec_depend>
+  <exec_depend>prius_description</exec_depend>
+  <exec_depend>carla_waypoint_publisher</exec_depend>
+  <exec_depend>pedestrian_simulator</exec_depend>
+  <exec_depend>jackal_gazebo</exec_depend>
+  <depend>guidance_planner</depend>
+  <exec_depend>roadmap</exec_depend>
+  <depend>simple_sim</depend>
+
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>rviz</exec_depend>
+  <exec_depend>topic_tools</exec_depend>
+  <exec_depend>xacro</exec_depend>
+
+</package>

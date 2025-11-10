@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+
+<launch>
+    <!-- Debug Info -->
+    <arg name="debug" default="false" />
+    <arg unless="$(arg debug)" name="launch_prefix" value="" />
+    <arg     if="$(arg debug)" name="launch_prefix" value="gdb --ex run --args" />
+    <arg name="debug_config_parameter" default="false"/>
+    <arg name="debug_kinematic_cal" default="false"/>
+    <arg name="debug_collision_detection" default="false"/>
+    <arg name="map_file" default="$(find lmpcc)/config/twoped_crossing_static.yaml"/>
+
+    <include file="$(find lmpcc_obstacle_feed)/launch/lmpcc_obstacle_feed.launch"/>
+    <node pkg="rqt_reconfigure" type="rqt_reconfigure" name="rqt_reconfigure" cwd="node" respawn="false" output="screen"/>
+
+    <!--Publish the mobile robot pose -->
+    <!-- <include file="$(find mobile_robot_state_publisher)/launch/mobile_robot_publisher.launch">
+    </include> -->
+
+    # load Cartesian controller config
+    <rosparam command="load" file="$(find lmpcc)/config/predictive_config_parameter.yaml"/>
+
+    <node pkg="lmpcc" type="lmpcc_node" name="lmpcc_node" cwd="node" respawn="false" output="screen">
+        <!-- Load costmap parameters -->
+        <rosparam file="$(find lmpcc)/config/costmap_dynamic_params.yaml" command="load" ns="costmap" /> 
+    </node>
+
+
+    <node name="costmap_prius" pkg="costmap_2d" type="costmap_2d_node" output="screen" clear_params="true">
+        <rosparam file="$(find lmpcc)/config/costmap_dynamic_params.yaml" command="load" ns="costmap" />
+        <param name='costmap/global_frame' value='map' />
+        <param name='costmap/robot_base_frame' value='base_link' />
+    </node>
+
+    <node pkg="tf2_ros" type="static_transform_publisher" name="glue_left" args="0 0 0 0 0 0 odom left"/>
+    <!-- <remap from="an_device/odom" to="odom"/> -->
+    <arg name="path" default="$(find lmpcc)/../../../bags/" />
+    <arg name="filename_stixels" default="_2020-03-11-16-01-03_stixelsonly" />
+    <node pkg="rosbag" type="play" name="player" output="screen" args="-q -l --clock $(arg path)$(arg filename_stixels).bag"/>
+</launch>  

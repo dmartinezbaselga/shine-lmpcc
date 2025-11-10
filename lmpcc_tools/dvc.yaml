@@ -1,0 +1,290 @@
+vars:
+  - method:
+      name: GMPCC
+      project: guidance-journal-2023
+      project_folder: "../../../../../../../Documents/publications/multi-mpc-2023/results"
+
+stages:
+
+  # generate_solver:
+  #   frozen: false
+  #   wdir: ../
+  #   cmd:
+  #     - cd lmpcc && bash 01_set_system.sh JackalSimulator
+  #     - cd lmpcc && bash 02_generate_solver.sh true ${method.name}
+  #   deps:
+  #     - lmpcc_solver/scripts/jackal/jackal_solver.py
+  #     - lmpcc_solver/scripts/jackal/jackal_settings.py
+  #   outs:
+  #     - lmpcc/include/generated/Configuration${method.name}
+
+  # build:
+  #   wdir: ../
+  #   deps:       
+  #     - lmpcc/include/generated/Configuration${method.name}
+  #   cmd:
+  #     - source ../../devel/setup.zsh && catkin build lmpcc
+  #   outs:
+
+
+  # build_and_generate_solver: # Build the solver
+  #   frozen: false
+  #   wdir: ../
+  #   cmd:
+  #     - cd lmpcc && bash 01_set_system.sh JackalSimulator
+  #     - cd lmpcc && bash 02_generate_solver.sh true ${method.name}
+  #     - source ../../devel/setup.zsh && catkin build lmpcc
+  #   deps:
+  #     - lmpcc_solver/scripts/jackal/jackal_solver.py
+  #     - lmpcc_solver/scripts/jackal/jackal_settings.py
+  #   outs:
+  #     - lmpcc/include/generated/Configuration${method.name}
+
+  static_comparison_run:
+    foreach:
+      small:
+        file: static/1_offset_small.xml # We can add each experiment like this (this is quite nice)
+        name: static-1_offset_small
+      blocking:
+        file: static/2_blocking.xml # We can add each experiment like this (this is quite nice)
+        name: static-2_blocking
+      sequential:
+        file: static/2_sequential.xml # We can add each experiment like this (this is quite nice)
+        name: static-2_sequential
+      sequential_tight:
+        file: static/2_sequential_tight.xml # We can add each experiment like this (this is quite nice)
+        name: static-2_sequential_tight
+      sequential_tight_3:
+        file: static/3_sequential_tight.xml # We can add each experiment like this (this is quite nice)
+        name: static-3_sequential_tight
+      middle:
+        file: static/1_middle.xml # for the guidance polygons
+        name: static-1_middle
+      middle_dynamic:
+        file: headon/1_middle.xml
+        name: headon-1_middle
+    do:
+      wdir: ../
+      deps:
+        - lmpcc/include/generated/Configuration${method.name}
+        - ../pedestrian_simulator/scenarios/headon/1_middle.xml
+        - lmpcc_tools/scripts/experiments/static_comparison/set_parameters.py
+      cmd:
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/static_comparison/main.py parameters # Load the parameters
+        - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true pedestrian_scenario:="${item.file}" project_name:="${method.project_folder}/data"
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/static_comparison/main.py restore # Remove the parameters
+      outs:
+        - lmpcc_tools/scripts/data/${method.project_folder}/data/${item.name}_${method.name}.txt
+
+  static_comparison_compare:
+    foreach:
+      small:
+        file: static/1_offset_small.xml # We can add each experiment like this (this is quite nice)
+        name: static-1_offset_small
+      blocking:
+        file: static/2_blocking.xml # We can add each experiment like this (this is quite nice)
+        name: static-2_blocking
+      sequential:
+        file: static/2_sequential.xml # We can add each experiment like this (this is quite nice)
+        name: static-2_sequential
+      sequential_tight:
+        file: static/2_sequential_tight.xml # We can add each experiment like this (this is quite nice)
+        name: static-2_sequential_tight
+      sequential_tight_3:
+        file: static/3_sequential_tight.xml # We can add each experiment like this (this is quite nice)
+        name: static-3_sequential_tight
+    do:
+      wdir: ../
+      deps:
+        - lmpcc_tools/scripts/data/${method.project_folder}/data/${item.name}_${method.name}.txt
+        - lmpcc_tools/scripts/experiments/static_comparison/main.py
+      cmd:
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 metrics.py ${item.name} ${method.name}
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/static_comparison/main.py process ${item.name} ${method.name}
+      outs:
+        - lmpcc_tools/scripts/figures/${method.project_folder}/figures/${item.name}/trajectory_comparison0.pdf
+        - lmpcc_tools/scripts/figures/${method.project_folder}/figures/${item.name}/objective_values.pdf
+
+  guidance_polygons:
+    foreach:
+      middle:
+        file: static/1_middle.xml # for the guidance polygons
+        name: static-1_middle
+      middle_dynamic:
+        file: headon/1_middle.xml
+        name: headon-1_middle
+    do:
+      wdir: ../
+      deps:
+        - lmpcc_tools/scripts/data/${method.project_folder}/data/${item.name}_${method.name}.txt
+        - lmpcc_tools/scripts/experiments/guidance_polygons_visual/main.py
+      cmd:
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 metrics.py ${item.name} ${method.name}
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/guidance_polygons_visual/main.py process ${item.name} ${method.name}
+      outs:
+        - lmpcc_tools/scripts/figures/${method.project_folder}/figures/${item.name}/guidance_polygons_${item.name}.pdf
+
+  dynamic_comparison_run:
+    foreach:
+      random-16:
+        file: random/16_straight.xml # Busy scenario
+        name: random-16_straight # Save under a different name
+    do:
+      wdir: ../
+      deps:
+        - lmpcc/include/generated/Configuration${method.name}
+        - lmpcc_tools/scripts/experiments/dynamic_cost_comparison/set_parameters.py
+      cmd:
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/dynamic_cost_comparison/main.py parameters # Load the parameters
+        - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true pedestrian_scenario:="${item.file}" project_name:="${method.project_folder}/data"
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/dynamic_cost_comparison/main.py restore # Remove the parameters
+      outs:
+        - lmpcc_tools/scripts/data/${method.project_folder}/data/cost-${item.name}_${method.name}.txt
+
+  dynamic_comparison_evaluate:
+    foreach:
+      random-16:
+        file: random/16_straight.xml # Busy scenario
+        name: random-16_straight # Save under a different name to prevent clashes with regular dynamic eval
+    do:
+      wdir: ../
+      deps:
+        - lmpcc_tools/scripts/data/${method.project_folder}/data/cost-${item.name}_${method.name}.txt
+        - lmpcc_tools/scripts/experiments/dynamic_cost_comparison/main.py
+      cmd:
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 metrics.py cost-${item.name} ${method.name}
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/dynamic_cost_comparison/main.py process cost-${item.name} ${method.name}
+      outs:
+        - lmpcc_tools/scripts/figures/${method.project_folder}/figures/cost-${item.name}/dynamic_cost_comparison0.pdf
+
+  uvd_screenshot:
+    foreach:
+      middle:
+        file: static/1_middle.xml # for the guidance polygons
+        name: static-1_middle
+    do:
+      wdir: ../
+      deps:
+        - lmpcc_tools/scripts/main.py
+      cmd:
+        - echo "Make a screenshot using RVIZ -> Save Image! Save in lmpcc_tools/scripts/figures/${method.project_folder}/figures/UVD.png"
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 main.py static_uvd_failure # Load the parameters
+        - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true pedestrian_scenario:="${item.file}" project_name:="${method.project_folder}/data" rviz_config:="screenshots-uvd-homology"
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 main.py remove # Remove the parameters
+      outs:
+        - lmpcc_tools/scripts/figures/${method.project_folder}/figures/UVD.png
+  
+  homology_screenshot:
+    foreach:
+      middle:
+        file: static/1_middle.xml # for the guidance polygons
+        name: static-1_middle
+    do:
+      wdir: ../
+      deps:
+        - lmpcc_tools/scripts/main.py
+      cmd:
+        - echo "Make a screenshot using RVIZ -> Save Image! Save in lmpcc_tools/scripts/figures/${method.project_folder}/figures/Homology.png"
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 main.py static_homology_success # Load the parameters
+        - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true pedestrian_scenario:="${item.file}" project_name:="${method.project_folder}/data" rviz_config:="screenshots-uvd-homology"
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 main.py remove # Remove the parameters
+      outs:
+        - lmpcc_tools/scripts/figures/${method.project_folder}/figures/Homology.png
+
+  run_uvd:
+    foreach:
+      random-2:
+        file: random/2_straight.xml
+        name: random-2_straight
+      random-4:
+        file: random/4_straight.xml
+        name: random-4_straight
+      random-6:
+        file: random/6_straight.xml
+        name: random-6_straight
+    do:
+      wdir: ../
+      deps:
+        - lmpcc_tools/scripts/experiments/topology_comparison/set_parameters.py
+      cmd:
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/topology_comparison/main.py parameters UVD # Load the parameters
+        - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true pedestrian_scenario:="${item.file}" project_name:="${method.project_folder}/data"
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/topology_comparison/main.py restore # Remove the parameters
+      outs:
+        - lmpcc_tools/scripts/data/${method.project_folder}/data/UVD-${item.name}_${method.name}.txt # UVD- is added as prepend name
+  
+  run_homology:
+    foreach:
+      random-2:
+        file: random/2_straight.xml
+        name: random-2_straight
+      random-4:
+        file: random/4_straight.xml
+        name: random-4_straight
+      random-6:
+        file: random/6_straight.xml
+        name: random-6_straight
+    do:
+      wdir: ../
+      deps:
+        - lmpcc_tools/scripts/experiments/topology_comparison/set_parameters.py
+      cmd:
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/topology_comparison/main.py parameters Homology # Load the parameters
+        - source ../../devel/setup.zsh && roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true pedestrian_scenario:="${item.file}" project_name:="${method.project_folder}/data"
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/topology_comparison/main.py restore # Remove the parameters
+      outs:
+        - lmpcc_tools/scripts/data/${method.project_folder}/data/Homology-${item.name}_${method.name}.txt # UVD- is added as prepend name
+
+  metrics_uvd:
+    foreach:
+      random-2:
+        file: random/2_straight.xml
+        name: random-2_straight
+      random-4:
+        file: random/4_straight.xml
+        name: random-4_straight
+      random-6:
+        file: random/6_straight.xml
+        name: random-6_straight
+    do:
+      wdir: ../
+      deps:
+        - lmpcc_tools/scripts/data/${method.project_folder}/data/UVD-${item.name}_${method.name}.txt # UVD- is added as prepend name
+      cmd:
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 metrics.py UVD-${item.name} ${method.name}
+      outs:
+        - lmpcc_tools/scripts/data/${method.project_folder}/metrics/UVD-${item.name}/${method.name}.json # UVD- is added as prepend name
+
+  metrics_homology:
+    foreach:
+      random-2:
+        file: random/2_straight.xml
+        name: random-2_straight
+      random-4:
+        file: random/4_straight.xml
+        name: random-4_straight
+      random-6:
+        file: random/6_straight.xml
+        name: random-6_straight        
+    do:
+      wdir: ../
+      deps:
+        - lmpcc_tools/scripts/data/${method.project_folder}/data/Homology-${item.name}_${method.name}.txt # UVD- is added as prepend name
+      cmd:
+        - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 metrics.py Homology-${item.name} ${method.name}
+      outs:
+        - lmpcc_tools/scripts/data/${method.project_folder}/metrics/Homology-${item.name}/${method.name}.json # UVD- is added as prepend name
+
+  compare_topology:      
+    wdir: ../
+    deps:
+        - lmpcc_tools/scripts/data/${method.project_folder}/metrics/Homology-random-2_straight/${method.name}.json # UVD- is added as prepend name
+        - lmpcc_tools/scripts/data/${method.project_folder}/metrics/Homology-random-4_straight/${method.name}.json # UVD- is added as prepend name
+        - lmpcc_tools/scripts/data/${method.project_folder}/metrics/Homology-random-6_straight/${method.name}.json # UVD- is added as prepend name
+        - lmpcc_tools/scripts/data/${method.project_folder}/metrics/UVD-random-2_straight/${method.name}.json # UVD- is added as prepend name
+        - lmpcc_tools/scripts/data/${method.project_folder}/metrics/UVD-random-4_straight/${method.name}.json # UVD- is added as prepend name
+        - lmpcc_tools/scripts/data/${method.project_folder}/metrics/UVD-random-6_straight/${method.name}.json # UVD- is added as prepend name
+    cmd:
+      - source ../../devel/setup.zsh && cd lmpcc_tools/scripts && python3 experiments/topology_comparison/main.py process
+    # outs:
+    #   - lmpcc_tools/scripts/data/${method.project_folder}/../latex/tables/topology_comparison.tex

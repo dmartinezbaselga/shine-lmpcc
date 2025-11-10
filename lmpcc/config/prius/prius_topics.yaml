@@ -1,0 +1,31 @@
+# Input and output topics
+publish:
+    control_command: '/lmpcc'
+    feedback: '/lmpcc/controller_feedback'
+    reset: '/lmpcc/reset'
+    reset_environment: '/lmpcc/reset_environment'
+
+
+subscribe:
+    state: '/ukf_localization_map/odometry/filtered'
+    obstacles: ''
+    velocity: ''
+    # obstacle_predictions: /multitrack_preds_3d/multitrack_preds # Predicted real pedestrians
+    obstacle_predictions: /pedestrian_simulator/trajectory_predictions # Simulated pedestrians
+    waypoints: '/roadmap/reference'
+    steering_angle: '/movebox/front_left_steer_joint' 
+    acceleration: '/ukf_localization_odom/accel/filtered'
+    velocity_reference: '/lmpcc/vref'
+    occupancy_grid: 'costmap/costmap/costmap'
+    linear_constraints: '/lmpcc/linear_constraints'
+
+visualization:
+    reference_path: '/lmpcc/reference_path'
+    reference_arrows: '/lmpcc/reference_arrows'
+    spline_index: '/lmpcc/spline_index'
+    current_collision_space: '/lmpcc/current_collision_space'
+    planned_collision_space: '/lmpcc/planned_collision_space'
+    planned_trajectory: '/lmpcc/planned_trajectory'
+    free_space: '/lmpcc/free_space'
+    obstacles_received: '/lmpcc/received_obstacles'
+    obstacles_predicted: ''

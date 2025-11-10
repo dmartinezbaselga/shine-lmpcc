@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<launch>
+    <!-- Debug Info -->
+    <arg name="debug" default="false" />
+    <arg unless="$(arg debug)" name="launch_prefix" value="" />
+    <arg     if="$(arg debug)" name="launch_prefix" value="gdb --ex run --args" />
+    <arg name="gui" default="false" />
+    <arg name="map_file" default="$(find lmpcc)/config/map.yaml"/>
+
+    <!-- Controller --> 
+    <rosparam command="load" file="$(find lmpcc)/config/jackal/jackal_parameters.yaml"/>
+    <rosparam command="load" file="$(find lmpcc)/config/jackal/jackal_topics.yaml"/>
+    <rosparam command="load" file="$(find lmpcc)/config/jackal/experiment_path.yaml"/>
+    <rosparam command="load" file="$(find lmpcc)/config/jackal/jackal_guidance_planner.yaml"/>
+    
+    <!-- Overwritten parameters for an experiment -->
+    <rosparam command="load" file="$(find lmpcc)/config/jackal/experiment_parameters.yaml"/>
+
+    <!-- Naming of output data for LMPCC -->
+    <!-- <param name="recording/experiment" value="$(arg pedestrian_scenario)" if="$(arg overwrite_pedestrian_scenario)"/> -->
+    <!-- <param name="recording/project_name" value="$(arg project_name)"/> -->
+
+    <node pkg="lmpcc" type="lmpcc_node" name="lmpcc_node" cwd="node" respawn="false" output="screen" required="true"/>
+
+    <!-- <node pkg="rqt_reconfigure" type="rqt_reconfigure" name="rqt_reconfigure" cwd="node" respawn="false" output="screen"/> -->
+	
+</launch>  

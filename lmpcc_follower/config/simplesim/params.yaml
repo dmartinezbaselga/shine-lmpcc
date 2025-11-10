@@ -1,0 +1,15 @@
+follower:
+  debug_output: true
+  debug_solver: false
+  clock_frequency: 100  # in Hz
+
+  # PID follower gains (dynamicly reconfigured, probably old values, check PredictiveController_{System}.cfg file for up to date gains)  
+  Kp_v: 3.5
+  Kd_v: 3.5 # (copied)
+  Kp_delta: 4.0
+  Kd_delta: 4.0 # (copied)
+  Kp_x: 2.5
+  Kp_stanley: 0.3
+  plan_reference_index: 0
+
+

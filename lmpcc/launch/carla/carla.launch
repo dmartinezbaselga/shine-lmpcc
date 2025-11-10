@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+
+<launch>
+    <!-- Debug Info -->
+    <arg name="debug" default="false" />
+    <arg unless="$(arg debug)" name="launch_prefix" value="" />
+    <arg     if="$(arg debug)" name="launch_prefix" value="gdb --ex run --args" />
+    <arg name="debug_config_parameter" default="false"/>
+    <arg name="debug_kinematic_cal" default="false"/>
+    <arg name="debug_collision_detection" default="false"/>
+    <arg name="scenario" default="straight_road" />
+    <!-- <arg name="scenario" default="straight_pedestrian_simulator" /> -->
+
+	<!-- <arg name="spawn_point" default="10.0,0.5,0.5,0.0,0.0,0.0"/> -->
+  <!-- NOTE: for town 2 the y coordinate is inverted compared to the state in the spawn_point -->
+  <!-- <arg name="spawn_point" default="5.0,192.0,2.0,0.0,0.0,0.0"/> -->
+  <arg name="spawn_point" default="-119,130.0,2.0,0.0,0.0,90.0"/>
+
+  <arg name="vehicle_filter" default="model3"/>
+	<arg name="town" default="Town01"/>
+	<arg name="enable_record" default="false"/>
+
+	<!-- Should carla wait for its sensors etc. -->
+	<arg name="synchronous_mode" default="true"/>
+	<!-- Own code: Should carla run in real-time -->
+	<arg name="realtime" default="true"/>
+	<!-- If false the car control may be delayed, if true there are some issues with ackermann control initially -->
+	<arg name="synchronous_mode_wait_for_vehicle_control_command" default="true"/>
+	<!-- The time step of the simulation -->
+  	<arg name='fixed_delta_seconds' default='0.05'/>
+
+    <rosparam command="load" file="$(find lmpcc)/config/carla/carla_parameters.yaml"/>
+    <rosparam command="load" file="$(find lmpcc)/config/carla/carla_topics.yaml"/>
+    <rosparam command="load" file="$(find lmpcc)/config/carla/homotopy.yaml"/>
+    <rosparam command="load" file="$(find lmpcc)/config/path.yaml"/>
+    <node pkg="lmpcc" type="lmpcc_node" name="lmpcc_node" cwd="node" respawn="false" output="screen"/>
+
+    <!-- Loading the scenario with pedestrians -->
+    <include file = "$(find carla_simulation_tools)/launch/scenario.launch">
+        <arg name="scenario" value="$(arg scenario)" />
+    </include>
+    
+    <!-- launch vehicle -->
+    <include file="$(find carla_ros_bridge)/launch/carla_ros_bridge_with_example_ego_vehicle.launch">
+        <arg name="spawn_point" value="$(arg spawn_point)" />
+        <arg name="town" value="$(arg town)" />
+        <arg name="vehicle_filter" default='model*'/>
+        <arg name="synchronous_mode" value='$(arg synchronous_mode)'/>
+        <arg name="synchronous_mode_wait_for_vehicle_control_command" value='$(arg synchronous_mode_wait_for_vehicle_control_command)'/>
+        <arg name="fixed_delta_seconds" value='$(arg fixed_delta_seconds)'/>
+        <arg name="realtime" value='$(arg realtime)'/>
+    </include>
+
+    <include file="$(find carla_ackermann_control)/launch/carla_ackermann_control_simpler.launch"/>
+
+    <include file="$(find carla_waypoint_publisher)/launch/carla_waypoint_publisher.launch"/>
+
+    <!-- HIDDE'S PREDICTIONS -->
+    <!-- <include file="$(find multitrack_predictor)/launch/carla.launch"/> -->
+
+    <!-- MANUAL NOISY PEDESTRIAN SIMULATOR -->
+    <!-- <include file="$(find pedestrian_simulator)/launch/simulation.launch"/> -->
+
+    <!-- Partitioning -->
+    <!-- <node pkg="lmpcc" type="observation_partitioning_node.py" name="observation_partitioning_node"/> -->
+
+    <include file="$(find roadmap)/launch/roadmap.launch"/>
+
+    <!-- configured rviz -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find lmpcc)/rviz_config/carla/rviz_config_top_camera_video.rviz" output="log"/>
+    
+    <arg name="model" default="$(find prius_description)/urdf/prius.urdf"/>
+    <param name="robot_description" textfile="$(arg model)"/>
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="log">
+      <!-- <remap from="robot_description" to="different_robot_description" /> -->
+      <!-- <remap from="joint_states" to="/prius/joint_states" /> -->
+    </node>
+    <node pkg="tf2_ros" type="static_transform_publisher" name="very_inaccurate_odom" args="-1.3 0 0 0 0 0 ego_vehicle base_link" output="log"/>
+
+    <node name="rqt_reconfig" pkg="rqt_reconfigure" type="rqt_reconfigure" output="log"/>
+
+
+    <!-- Record -->
+     <node pkg="rosbag" type="record" name="rosbag_record_states"
+       args="record -o $(find lmpcc)/record/state_recording /carla/objects /carla/ego_vehicle/odometry /carla/ego_vehicle/ackermann_cmd /lmpcc/initialpose timeout /carla/status /reset"
+       if="$(arg enable_record)" />
+</launch>

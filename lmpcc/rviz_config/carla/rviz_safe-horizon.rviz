@@ -1,0 +1,488 @@
+Panels:
+  - Class: rviz/Displays
+    Help Height: 0
+    Name: Displays
+    Property Tree Widget:
+      Expanded:
+        - /Global Options1
+        - /Camera1/Visibility1
+        - /VideoCapture1
+      Splitter Ratio: 0.5
+    Tree Height: 478
+  - Class: rviz/Selection
+    Name: Selection
+  - Class: rviz/Tool Properties
+    Expanded:
+      - /2D Pose Estimate1
+      - /2D Nav Goal1
+      - /Publish Point1
+    Name: Tool Properties
+    Splitter Ratio: 0.5886790156364441
+  - Class: rviz/Views
+    Expanded:
+      - /Current View1
+      - /Current View1/Focal Point1
+    Name: Views
+    Splitter Ratio: 0.5
+  - Class: rviz/Time
+    Experimental: false
+    Name: Time
+    SyncMode: 0
+    SyncSource: Camera
+  - Class: jsk_rviz_plugin/ObjectFitOperatorAction
+    Name: ObjectFitOperatorAction
+Preferences:
+  PromptSaveOnExit: true
+Toolbars:
+  toolButtonStyle: 2
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Alpha: 0.5
+      Cell Size: 1
+      Class: rviz/Grid
+      Color: 160; 160; 164
+      Enabled: false
+      Line Style:
+        Line Width: 0.029999999329447746
+        Value: Lines
+      Name: Grid
+      Normal Cell Count: 0
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Plane: XY
+      Plane Cell Count: 10
+      Reference Frame: <Fixed Frame>
+      Value: false
+    - Alpha: 1
+      Class: rviz/Axes
+      Enabled: false
+      Length: 3
+      Name: Axes
+      Radius: 0.30000001192092896
+      Reference Frame: ego_vehicle
+      Show Trail: false
+      Value: false
+    - Alpha: 1
+      Class: rviz/RobotModel
+      Collision Enabled: false
+      Enabled: true
+      Links:
+        All Links Enabled: true
+        Expand Joint Details: false
+        Expand Link Details: false
+        Expand Tree: false
+        Link Tree Style: Links in Alphabetic Order
+        base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        center_laser_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        chassis:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        fl_axle:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        fr_axle:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        front_camera_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        front_left_wheel:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        front_right_wheel:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rear_left_wheel:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rear_right_wheel:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        steering_wheel:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+      Name: RobotModel
+      Robot Description: robot_description
+      TF Prefix: ""
+      Update Interval: 0
+      Value: true
+      Visual Enabled: true
+    - Class: rviz/MarkerArray
+      Enabled: false
+      Marker Topic: /lmpcc/reference_arrows
+      Name: Path Waypoints
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: false
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /lmpcc/visuals/reference_path
+      Name: Reference Path
+      Namespaces:
+        "": true
+      Queue Size: 100
+      Value: true
+    - Class: rviz/MarkerArray
+      Enabled: false
+      Marker Topic: /lmpcc/spline_index
+      Name: Spline Current Point
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: false
+    - Class: rviz/MarkerArray
+      Enabled: false
+      Marker Topic: /lmpcc/current_collision_space
+      Name: Current Collision Space
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: false
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /lmpcc/planned_collision_space
+      Name: Collision Space
+      Namespaces:
+        "": true
+      Queue Size: 100
+      Value: true
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /scenario_constraints/markers
+      Name: Scenario Visuals
+      Namespaces:
+        "": true
+      Queue Size: 100
+      Value: true
+    - Class: rviz/MarkerArray
+      Enabled: false
+      Marker Topic: /lmpcc/received_obstacles
+      Name: Received Obstacles
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: false
+    - Class: rviz/Marker
+      Enabled: false
+      Marker Topic: /carla/marker
+      Name: Vehicle Box
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: false
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /social_vdgnn_predictions
+      Name: VRNN Predictions
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: true
+    - Class: rviz/MarkerArray
+      Enabled: false
+      Marker Topic: /carla/pedestrian_spawn_points
+      Name: Pedestrians and Road
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: false
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /carla/straight_road
+      Name: Road Marking
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: true
+    - Class: rviz/MarkerArray
+      Enabled: false
+      Marker Topic: /vrnn_debug
+      Name: VRNN Velocities
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: false
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /hardcoded_predictions/visuals
+      Name: Hardcoded Predictions
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: true
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /hardcoded_predictions/splines
+      Name: MarkerArray
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: true
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /lmpcc/linear_road_constraints
+      Name: Linear Road Constraints
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: true
+    - Class: rviz/MarkerArray
+      Enabled: false
+      Marker Topic: /road_limits
+      Name: Road Limits
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: false
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /lmpcc/ellipsoid_constraints/markers
+      Name: Ellipsoid Constraints
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: true
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /lmpcc/predicted_obstacles
+      Name: Predicted Obstacles
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: true
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /roadmap/output_map
+      Name: Roadmap
+      Namespaces:
+        "": true
+      Queue Size: 100
+      Value: true
+    - Class: rviz/Camera
+      Enabled: true
+      Image Rendering: background and overlay
+      Image Topic: /carla/ego_vehicle/camera/rgb/rgb_front/image_color
+      Name: Camera
+      Overlay Alpha: 0.5
+      Queue Size: 2
+      Transport Hint: raw
+      Unreliable: false
+      Value: true
+      Visibility:
+        Acceleration: true
+        Axes: true
+        Collision Space: true
+        Current Collision Space: true
+        Ellipsoid Constraints: true
+        Grid: true
+        Hardcoded Predictions: true
+        Linear Road Constraints: true
+        MarkerArray: true
+        Path Waypoints: true
+        Pedestrians: true
+        Pedestrians and Road: true
+        Predicted Obstacles: true
+        Received Obstacles: true
+        Reference Path: true
+        Road Limits: true
+        Road Marking: true
+        Roadmap: true
+        RobotModel: false
+        Scenario Visuals: true
+        Spline Current Point: true
+        Steering: true
+        VRNN Predictions: true
+        VRNN Velocities: true
+        Value: true
+        Vehicle Box: true
+        Velocity: true
+        VideoCapture: true
+      Zoom Factor: 1
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /pedestrian_simulator/visualization
+      Name: Pedestrians
+      Namespaces:
+        "": true
+      Queue Size: 100
+      Value: true
+    - Buffer length: 100
+      Class: jsk_rviz_plugin/Plotter2D
+      Enabled: true
+      Name: Acceleration
+      Show Value: true
+      Topic: /lmpcc/throttle
+      Value: true
+      auto color change: true
+      auto scale: true
+      background color: 0; 0; 0
+      backround alpha: 0
+      border: true
+      foreground alpha: 0.699999988079071
+      foreground color: 78; 154; 6
+      height: 150
+      left: 10
+      linewidth: 5
+      max color: 78; 154; 6
+      max value: 1
+      min value: -1
+      show caption: true
+      text size: 12
+      top: 10
+      update interval: 0.03999999910593033
+      width: 150
+    - Buffer length: 100
+      Class: jsk_rviz_plugin/Plotter2D
+      Enabled: true
+      Name: Velocity
+      Show Value: true
+      Topic: /movebox/vx
+      Value: true
+      auto color change: true
+      auto scale: true
+      background color: 0; 0; 0
+      backround alpha: 0
+      border: true
+      foreground alpha: 0.699999988079071
+      foreground color: 78; 154; 6
+      height: 150
+      left: 170
+      linewidth: 5
+      max color: 78; 154; 6
+      max value: 1
+      min value: -1
+      show caption: true
+      text size: 12
+      top: 10
+      update interval: 0.03999999910593033
+      width: 150
+    - Buffer length: 100
+      Class: jsk_rviz_plugin/Plotter2D
+      Enabled: true
+      Name: Steering
+      Show Value: true
+      Topic: /movebox/delta
+      Value: true
+      auto color change: true
+      auto scale: true
+      background color: 0; 0; 0
+      backround alpha: 0
+      border: true
+      foreground alpha: 0.699999988079071
+      foreground color: 78; 154; 6
+      height: 150
+      left: 385
+      linewidth: 5
+      max color: 78; 154; 6
+      max value: 1
+      min value: -1
+      show caption: true
+      text size: 12
+      top: 10
+      update interval: 0.03999999910593033
+      width: 150
+    - Class: jsk_rviz_plugin/VideoCapture
+      Enabled: true
+      Name: VideoCapture
+      Value: true
+      filename: /tmp/lmpcc-video.avi
+      fps: 20
+      height: 1080
+      start capture: false
+      use 3D viewer size: true
+      width: 1920
+  Enabled: true
+  Global Options:
+    Background Color: 255; 255; 255
+    Default Light: true
+    Fixed Frame: robot_state
+    Frame Rate: 20
+  Name: root
+  Tools:
+    - Class: rviz/Interact
+      Hide Inactive Objects: true
+    - Class: rviz/MoveCamera
+    - Class: rviz/Select
+    - Class: rviz/FocusCamera
+    - Class: rviz/Measure
+    - Class: rviz/SetInitialPose
+      Theta std deviation: 0.2617993950843811
+      Topic: /lmpcc/initialpose
+      X std deviation: 0.5
+      Y std deviation: 0.5
+    - Class: rviz/SetGoal
+      Topic: /carla/ego_vehicle/goal
+    - Class: rviz/PublishPoint
+      Single click: true
+      Topic: /clicked_point
+  Value: true
+  Views:
+    Current:
+      Class: rviz/Orbit
+      Distance: 15.504014015197754
+      Enable Stereo Rendering:
+        Stereo Eye Separation: 0.05999999865889549
+        Stereo Focal Distance: 1
+        Swap Stereo Eyes: false
+        Value: false
+      Field of View: 0.7853981852531433
+      Focal Point:
+        X: 1.0250431299209595
+        Y: 6.352416038513184
+        Z: 2.7009437084198
+      Focal Shape Fixed Size: false
+      Focal Shape Size: 0.05000000074505806
+      Invert Z Axis: false
+      Name: Current View
+      Near Clip Distance: 0.009999999776482582
+      Pitch: 0.5700001120567322
+      Target Frame: <Fixed Frame>
+      Yaw: 3.3400049209594727
+    Saved: ~
+Window Geometry:
+  Camera:
+    collapsed: false
+  Displays:
+    collapsed: false
+  Height: 1403
+  Hide Left Dock: false
+  Hide Right Dock: true
+  ObjectFitOperatorAction:
+    collapsed: false
+  QMainWindow State: 000000ff00000000fd0000000400000000000001bf0000021bfc020000000dfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afc0000003d0000021b000000c900fffffffa000000010100000002fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730200000780000001cc000002b800000214fb000000100044006900730070006c0061007900730100000000000002b80000015600fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000120020002d00200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e006701000001d2000001e60000000000000000fb0000002e004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d00200053006c00690064006500720000000000ffffffff0000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001800460072006f006e0074002000430061006d006500720061000000023f000001760000000000000000fb0000002e004f0062006a006500630074004600690074004f00700065007200610074006f00720041006300740069006f006e00000003cc000001920000019200ffffff000000010000010f0000028cfc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003d0000028c000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000006b800000300fc0100000003fb0000000800540069006d00650100000000000006b8000002eb00fffffffc00000000000006b80000000000fffffffa000000010200000003fb0000000c00430061006d00650072006103000001dc000001200000021000000154fb0000000c00430061006d0065007200610100000000ffffffff0000000000000000fb0000000c00430061006d0065007200610100000000ffffffff0000000000000000fb0000000800540069006d00650100000000000004500000000000000000000004f30000021b00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  Selection:
+    collapsed: false
+  Time:
+    collapsed: false
+  Tool Properties:
+    collapsed: false
+  Views:
+    collapsed: true
+  Width: 1720
+  X: 0
+  Y: 0

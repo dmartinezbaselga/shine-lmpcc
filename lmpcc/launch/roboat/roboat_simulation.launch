@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+
+<launch>
+    <!-- Debug Info -->
+    <arg name="debug" default="false" />
+    <arg unless="$(arg debug)" name="launch_prefix" value="" />
+    <arg if="$(arg debug)" name="launch_prefix" value="gdb --ex run --args" />
+    <!-- Variables -->
+    <arg name="gui" default="false" />
+    <arg name="use_quarterscale_roboat_sim" value="false" />
+    <arg name="run_nmpc" default="false" />
+
+    <!-- Use original Roboat simulation for dynamics, but visualization of social_simulator -->
+    <group if="$(arg use_quarterscale_roboat_sim)">
+        <include file="$(find roboat_social_simulator)/launch/social_simulator.launch" >
+            <arg name="run_social_simulation" value="false"/>
+            <arg name="run_rviz" value="true"/>
+        </include>
+        <include file="$(find roboat_tracking)/launch/simulator.launch" >
+            <arg name="run_rviz" value="false"/>
+            <arg name="boat_type" value="quarter"/>
+            <arg name="run_nmpc" value="$(arg run_nmpc)"/>
+        </include>
+    </group>
+
+    <!-- Use Roboat social_simulator -->
+    <group if="$(eval not (arg('use_quarterscale_roboat_sim')))">
+        <!-- Roboat simulation -->
+        <include file="$(find roboat_social_simulator)/launch/social_simulator.launch" />
+    </group>
+
+    <!-- Load configs for LMPCC -->
+    <rosparam command="load" file="$(find lmpcc)/config/roboat/roboat_predictive_config_parameter.yaml"/>
+    <rosparam command="load" file="$(find lmpcc)/config/roboat/roboat_topics.yaml"/>
+
+    <!-- Start LMPCC node -->
+    <group unless="$(arg run_nmpc)">
+        <node pkg="lmpcc" type="lmpcc_node" name="lmpcc_node" cwd="node" respawn="false" output="screen">
+            <rosparam file="$(find lmpcc)/config/costmap_static_params.yaml" command="load" ns="costmap" />
+        </node>
+    </group>
+
+    <!-- Start node for static obstacles -->
+    <include file="$(find linear_constraint_generation)/launch/static_obstacles.launch"> </include>
+
+    <!-- Start node for metrics -->
+    <include file="$(find roboat_social_simulator)/launch/calculate_metrics.launch"> </include>
+
+    <node name = "my_rqt_dashboard" pkg = "rqt_gui" type = "rqt_gui" respawn = "false" output = "screen"
+          args = "--perspective-file $(find roboat_social_simulator)/config/social_simulator.perspective"/>
+	
+</launch>  

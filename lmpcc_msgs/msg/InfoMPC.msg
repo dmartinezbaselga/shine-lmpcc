@@ -1,0 +1,9 @@
+float64 obstacle_radius
+float64 robot_radius
+float64 x
+float64 y
+float64 theta
+float64 v
+SimpleObstacleArray obstacles
+float64 goal_x
+float64 goal_y

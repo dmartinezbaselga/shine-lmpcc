@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+
+<launch>
+    <!-- Debug Info -->
+    <arg name="debug" default="false" />
+    <arg unless="$(arg debug)" name="launch_prefix" value="" />
+    <arg     if="$(arg debug)" name="launch_prefix" value="gdb --ex run --args" />
+    <arg name="debug_config_parameter" default="false"/>
+    <arg name="debug_kinematic_cal" default="false"/>
+    <arg name="debug_collision_detection" default="false"/>
+    <arg name="gui" default="false" />
+    <!-- <arg name="pedestrian_scenario" default="corridor" /> -->
+    <arg name="pedestrian_scenario" default="16_random" />
+    <arg name="overwrite_pedestrian_scenario" default="false" />
+    <arg name="project_name" default="" />
+    <arg name="rviz_config" default="jackal_homotopy" />
+    <arg name="silent" default="false"/>
+
+
+    <!-- Robot Simulation -->
+    <include file="$(find jackal_gazebo)/launch/jackal_world.launch">
+    <arg name="gui" value="$(arg gui)" />
+    </include>
+
+    <node name="shine_server" pkg="lmpcc" type="run_guidance_server.sh" output="log" if="$(arg silent)"/>
+    <node name="shine_server" pkg="lmpcc" type="run_guidance_server.sh" output="screen" unless="$(arg silent)"/>
+
+    <!-- Ped simulator -->
+    <!-- Ex. roslaunch lmpcc jackalsimulator.launch overwrite_pedestrian_scenario:=true pedestrian_scenario:="headon/1_middle.xml" -->
+    <include file="$(find pedestrian_simulator)/launch/simulation.launch">
+        <arg name="pedestrian_scenario" value="$(arg pedestrian_scenario)"/>
+        <arg name="overwrite_pedestrian_scenario" value="$(arg overwrite_pedestrian_scenario)"/>
+    </include>
+
+    <!-- Robot state -->
+    <include file="$(find mobile_robot_state_publisher)/launch/mobile_robot_publisher.launch"/>
+
+    <!-- The dynamics propagation server -->
+    <!-- <node pkg="lmpcc_solver" type="online_dynamics_server.py" name="online_dynamics_server" output="log"/> -->
+
+    <include file="$(find roadmap)/launch/roadmap.launch"/>
+
+    <!-- Controller -->
+    <rosparam command="load" file="$(find lmpcc)/config/jackal/jackal_simulator_parameters.yaml"/>
+    <rosparam command="load" file="$(find lmpcc)/config/jackal/jackal_simulator_topics.yaml"/>
+    <rosparam command="load" file="$(find lmpcc)/config/path.yaml"/>
+    <rosparam command="load" file="$(find lmpcc)/config/jackal/guidance_planner.yaml"/>
+    
+    <!-- Autotuning results -->
+    <!-- <rosparam command="load" file="$(find lmpcc)/config/jackal/autotuned-homotopy.yaml"/> -->
+    <!-- Ongoing autotuning -->
+    <rosparam command="load" file="$(find lmpcc)/config/jackal/jackalsimulator_autotune_parameters.yaml"/>
+
+    <!-- Overwritten parameters for an experiment -->
+    <rosparam command="load" file="$(find lmpcc)/config/jackal/experiment_parameters.yaml"/>
+
+    <!-- Naming of output data for LMPCC -->
+    <param name="recording/experiment" value="$(arg pedestrian_scenario)" if="$(arg overwrite_pedestrian_scenario)"/>
+    <param name="recording/project_name" value="$(arg project_name)"/>
+
+    <node pkg="lmpcc" type="lmpcc_node" name="lmpcc_node" cwd="node" respawn="false" output="screen" required="true"/>
+    <node pkg="lmpcc" type="collision_checker_node" name="collision_checker_node" respawn="false" output="screen" required="true"/>
+
+    <!-- configured RVIZ and RQT Reconfigure -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find lmpcc)/rviz_config/jackal/$(arg rviz_config).rviz" output="log"/>
+
+    <node pkg="rqt_reconfigure" type="rqt_reconfigure" name="rqt_reconfigure" cwd="node" respawn="false" output="screen"/>
+    
+</launch>  

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<launch>
+
+    <rosparam command="load" file="$(find lmpcc_follower)/config/simplesim/params.yaml"/>
+    <node pkg="lmpcc_follower" type="follower_node" name="follower_node" cwd="node" required="true" respawn="false" output="screen"/>
+
+</launch>  
